@@ -1,0 +1,11 @@
+10
+108 25.00 chocolate
+209 10.50 Marshmallow
+308 30.00 Brownie
+407 15.00 Ice cream
+506 17.50 Cake
+605 12.90 Donut
+704 20.70 Cookie
+803 31.44 Candy
+902 46.02 Cupcake
+101 55.80 Pudding

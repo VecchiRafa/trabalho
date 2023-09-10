@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <locale.h>
+
+int main()
+{
+    setlocale(LC_ALL, "Portuguese");
+
+    FILE* arq_venda = fopen("vendas.txt", "r");
+    FILE* arq_produto = fopen("produtos.txt", "r");
+    FILE* arq_vendedor = fopen("vendedores.txt", "r");
+    FILE* arq_saida = fopen("totais.txt", "w");
+
+    char linha_venda[1024]; // Buffer para armazenar a linha lida
+    char linha_produto[1024];
+    char linha_vendedor[1024];
+
+    printf("Log de vendas:\n");
+
+    // Imprime a contagem e o conteúdo do arquivo de vendas, ignorando a primeira linha
+    for (int contador_linhas = 0, primeiraLinha = 1; fgets(linha_venda, sizeof(linha_venda), arq_venda) != NULL; contador_linhas++) {
+        
+        if (primeiraLinha) {
+            primeiraLinha = 0; // Ignora a primeira linha
+        } else {
+            printf("[%d] %s", contador_linhas, linha_venda);  
+        }
+        
+    }
+    
+    printf("\n\n");
+    printf("Catalogo de produtos:\n");
+
+    for (int contador_linhas = 0, primeiraLinha = 1; fgets(linha_produto, sizeof(linha_produto), arq_produto) != NULL; contador_linhas++) {
+       
+        if (primeiraLinha) {
+            primeiraLinha = 0;
+        } else {
+            printf("[%d] %s", contador_linhas, linha_produto);
+        }
+        
+    }
+
+    printf("\n\n");
+    printf("Lista de vendedores:\n");
+
+    for (int contador_linhas = 0, primeiraLinha = 1; fgets(linha_vendedor, sizeof(linha_vendedor), arq_vendedor) != NULL; contador_linhas++) {
+
+        if (primeiraLinha) {
+            primeiraLinha = 0;
+        } else {
+            printf("[%d] %s", contador_linhas, linha_vendedor);
+        }
+        
+    }
+
+    fclose(arq_venda);
+    fclose(arq_produto);
+    fclose(arq_vendedor);
+    fclose(arq_saida);
+    putchar('\n');
+
+    return 0;
+
+}
