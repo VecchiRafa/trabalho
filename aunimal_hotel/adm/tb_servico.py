@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
 # Configuração da conexão com o banco de dados usando SQLAlchemy
-engine = create_engine('mysql://root:Brother25525&@localhost/aunimal_hotel')
+engine = create_engine('mysql://root:Brother25525&@localhost/aunimal_hotel_teste')
 Session = sessionmaker(bind=engine)
 
 # Crie uma instância da classe Base
