@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <locale.h>
 
-#define MAX_ROWS 100
-#define MAX_COLS 100
-
 int main()
 {
     setlocale(LC_ALL, "Portuguese");
@@ -13,16 +10,13 @@ int main()
     FILE* arq_vendedor = fopen("vendedores.txt", "r");
     FILE* arq_saida = fopen("totais.txt", "w");
 
-
-
     char linha_venda[1024]; // Buffer para armazenar a linha lida
     char linha_produto[1024];
     char linha_vendedor[1024];
 
-    int matriz1[MAX_ROWS][MAX_COLS];
-    int matriz2[MAX_ROWS][MAX_COLS];
-    int matrizResultado[MAX_ROWS][MAX_COLS];
-    int numRows1, numCols1, numRows2, numCols2;
+    float somaTotal = 0;
+    //float totalProdutos = 0;
+    //float totalVendedor = 0;
 
     printf("Log de vendas:\n");
 
@@ -52,51 +46,24 @@ int main()
         printf("[%d] %s", contador_linhas, linha_vendedor);
     }
 
-
-
     // arrumar
     
-    // Ler a primeira matriz (vendas)
-    fscanf(arq_venda, "%d %d", &numRows1, &numCols1);
-
-    for (int i = 0; i < numRows1; i++) {
-        for (int j = 0; j < numCols1; j++) {
-            fscanf(arq_venda, "%d", &matriz1[i][j]);
+    while (fgets(linha_produto, sizeof(linha_produto), arq_produto) && fgets(linha_venda, sizeof(linha_venda), arq_venda)) {
+        int meio, inicio, fim, meioProduto;
+        int elementosLidos1 = sscanf(linha_produto, "%d %*d %*d", &inicio); // Lê o elemento do meio da linha do arq_produto
+        int elementosLidos4 = sscanf(linha_produto, "%*d %f %*d", &meioProduto);
+        int elementosLidos2 = sscanf(linha_venda, "%*d %d %*d", &meio); // Lê o elemento do meio da linha do arq_venda
+        int elementosLidos3 = sscanf(linha_venda, "%*d %*d %d", &fim);
+        if (meio == 108) {
+            int multiplicacao = fim * 25.00;
+            printf("Resultado da multiplicação: %d\n", multiplicacao);
+        } else {
+            printf("Deu algum erro\n");
         }
     }
 
-    // Ler a segunda matriz (produtos)
-    fscanf(arq_produto, "%d %d", &numRows2, &numCols2);
-
-    for (int i = 0; i < numRows2; i++) {
-        for (int j = 0; j < numCols2; j++) {
-            fscanf(arq_produto, "%d", &matriz2[i][j]);
-        }
-    }
-
-    // Realizar a soma das matrizes
-    if (numRows1 != numRows2 || numCols1 != numCols2) {
-        printf("As dimensões das matrizes não são compatíveis para a soma.\n");
-        return 1;
-    }
-
-    for (int i = 0; i < numRows1; i++) {
-        for (int j = 0; j < numCols1; j++) {
-            matrizResultado[i][j] = matriz1[i][j] + matriz2[i][j];
-        }
-    }
-
-    // Escrever a matriz de resultado no arquivo de saída
-    fprintf(arq_saida, "%d %d\n", numRows1, numCols1);
-
-    for (int i = 0; i < numRows1; i++) {
-        for (int j = 0; j < numCols1; j++) {
-            fprintf(arq_saida, "%d ", matrizResultado[i][j]);
-        }
-        fprintf(arq_saida, "\n");
-    }
-
-    //printf("Total geral vendido: ")
+    //printf("\n\n");
+    //printf("Total geral vendido: %d", somaTotal);
 
     fclose(arq_venda);
     fclose(arq_produto);
