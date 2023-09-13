@@ -93,6 +93,49 @@ def deletar_cliente(session):
         session.rollback()
         print(f"Erro ao excluir o cliente: {e}")
 
+def editar_cliente(session):
+    cliente_id = input("Digite o ID do cliente que deseja editar: ")
+
+    try:
+        # Buscar o cliente pelo ID
+        cliente = session.query(Cliente).filter(Cliente.id_cliente == cliente_id).one()
+
+        # Exibir as informações atuais do associado
+        associado = cliente.associado
+        print(f"Informações atuais do associado:")
+        print(f"Nome: {associado.nome}")
+        print(f"Nascimento: {associado.nascimento}")
+        print(f"CPF: {associado.cpf}")
+        print(f"RG: {associado.rg}")
+        print(f"Sexo: {associado.sexo}")
+        print(f"Email: {associado.email}")
+        print(f"Nacionalidade: {associado.nacionalidade}")
+
+        # Coletar as novas informações do associado
+        nome = input("Digite o novo nome do associado: ")
+        nascimento = input("Digite a nova data de nascimento (AAAA-MM-DD): ")
+        cpf = input("Digite o novo CPF: ")
+        rg = input("Digite o novo RG: ")
+        sexo = input("Digite o novo sexo (M/F/NI): ")
+        email = input("Digite o novo email: ")
+        nacionalidade = input("Digite a nova nacionalidade: ")
+
+        # Atualizar as informações do associado
+        associado.nome = nome
+        associado.nascimento = nascimento
+        associado.cpf = cpf
+        associado.rg = rg
+        associado.sexo = sexo
+        associado.email = email
+        associado.nacionalidade = nacionalidade
+
+        session.commit()
+        print("Cliente atualizado com sucesso!")
+    except Exception as e:
+        # Em caso de erro, faça o rollback e mostre a mensagem de erro
+        session.rollback()
+        print(f"Erro ao editar o cliente: {e}")
+
 def executar():
     # Iniciar uma sessão
     session = Session()
@@ -104,8 +147,9 @@ def executar():
         print("\nOpções:")
         print("1. Listar clientes")
         print("2. Adicionar cliente")
-        print("3. Deletar cliente")
-        print("4. Sair")
+        print("3. Editar cliente")
+        print("4. Deletar cliente")
+        print("5. Sair")
 
         escolha = input("Escolha uma opção: ")
 
@@ -123,8 +167,13 @@ def executar():
             print()
             print(50 * "=")
             print()
-            deletar_cliente(session)
+            editar_cliente(session)
         elif escolha == "4":
+            print()
+            print(50 * "=")
+            print()
+            deletar_cliente(session)
+        elif escolha == "5":
             print()
             print(50 * "=")
             print()
