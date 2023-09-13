@@ -13,7 +13,7 @@ def executar():
             tb_servico.executar()
         elif escolha == "2":
             # Importe e execute o módulo correspondente aqui
-            import tb_cliente_pessoa
+            from . import tb_cliente_pessoa
             tb_cliente_pessoa.executar()
         elif escolha == "3":
             print("Encerrando o programa.")

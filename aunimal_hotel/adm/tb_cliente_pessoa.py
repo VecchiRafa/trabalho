@@ -62,6 +62,7 @@ def executar():
         
         if escolha == "1":
             print(50*"=")
+            print()
             listar_clientes(session)
         elif escolha == "2":
             adicionar_cliente(session)
