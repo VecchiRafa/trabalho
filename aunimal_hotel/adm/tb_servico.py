@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
 # Configuração da conexão com o banco de dados usando SQLAlchemy
-engine = create_engine('mysql://root:Brother25525&@localhost/aunimahotel')
+engine = create_engine('mysql://root:Brother25525&@localhost/aunimalhotel')
 Session = sessionmaker(bind=engine)
 
 # Crie uma instância da classe Base
@@ -77,6 +77,9 @@ def executar():
             print()
             adicionar_servico(session)
         elif escolha == "3":
+            print()
+            print(50*"=")
+            print()
             print("Encerrando o programa.")
             break
         else:

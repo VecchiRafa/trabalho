@@ -15,6 +15,7 @@ def executar():
             # Importe e execute o módulo correspondente aqui
             from . import tb_cliente_pessoa
             tb_cliente_pessoa.executar()
+        
         elif escolha == "3":
             print("Encerrando o programa.")
             break
