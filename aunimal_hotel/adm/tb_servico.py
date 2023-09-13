@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
 # Configuração da conexão com o banco de dados usando SQLAlchemy
-engine = create_engine('mysql://root:Brother25525&@localhost/aunimal_hotel_teste')
+engine = create_engine('mysql://root:Brother25525&@localhost/aunimahotel')
 Session = sessionmaker(bind=engine)
 
 # Crie uma instância da classe Base
@@ -13,26 +13,29 @@ Base = declarative_base()
 class Servico(Base):
     __tablename__ = "servico"
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    valor_total = Column(Float, nullable=False)
+    id_servico = Column(Integer, primary_key=True, autoincrement=True)
+    nome_servico = Column(String(50), nullable=False)
+    valor_servico = Column(Float, nullable=False)
     descricao = Column(Text, nullable=True)
+    
     
 
 def listar_servicos(session):
     # Consultar serviços com as informações desejadas (id, valor_total e descricao)
-    servicos = session.query(Servico.id, Servico.valor_total, Servico.descricao).all()
+    servicos = session.query(Servico.id_servico,Servico.nome_servico, Servico.valor_servico, Servico.descricao).all()
     
     for servico in servicos:
-        id, valor_total, descricao = servico
-        print(f"id: {id}, Valor Total: {valor_total}, Descrição: {descricao}")
+        id_servico, nome_servico, valor_servico, descricao = servico
+        print(f"id: {id_servico}, nome: {nome_servico} Valor Total: {valor_servico}, Descrição: {descricao}")
 
 def adicionar_servico(session):
     # Coletar informações do usuário
-    valor_total = float(input("Digite o valor total do serviço: "))  # Corrigimos para 'valor_total'
+    nome_servico = input("Digite o nome do serviço: ")
+    valor_servico = float(input("Digite o valor total do serviço: "))  # Corrigimos para 'valor_total'
     descricao = input("Digite a descrição do serviço (opcional): ")
     
     # Criar uma nova instância de Servico
-    novo_servico = Servico(valor_total=valor_total, descricao=descricao)  # Corrigimos para 'valor_total'
+    novo_servico = Servico(nome_servico=nome_servico, valor_servico=valor_servico, descricao=descricao)  # Corrigimos para 'valor_total'
     
     # Adicionar o serviço à sessão
     session.add(novo_servico)
@@ -53,6 +56,9 @@ def executar():
     session = Session()
 
     while True:
+        print()
+        print(50*"=")
+        print()
         print("\nOpções:")
         print("1. Listar serviços")
         print("2. Adicionar serviço")
@@ -61,8 +67,14 @@ def executar():
         escolha = input("Escolha uma opção: ")
         
         if escolha == "1":
+            print()
+            print(50*"=")
+            print()
             listar_servicos(session)
         elif escolha == "2":
+            print()
+            print(50*"=")
+            print()
             adicionar_servico(session)
         elif escolha == "3":
             print("Encerrando o programa.")

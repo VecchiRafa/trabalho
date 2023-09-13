@@ -9,7 +9,7 @@ def executar():
         
         if escolha == "1":
             # Importe e execute o módulo correspondente aqui
-            import tb_servico
+            from . import tb_servico
             tb_servico.executar()
         elif escolha == "2":
             # Importe e execute o módulo correspondente aqui
