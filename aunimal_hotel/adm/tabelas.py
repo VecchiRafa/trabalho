@@ -9,7 +9,10 @@ def executar():
         print("2. Clientes")
         print("3. Funcionario")
         print("4. Profissao")
-        print("5. Sair")
+        print("5. pet")
+        print("6. raca")
+        print("7. especie")
+        print("8. Sair")
         
         escolha = input("Escolha uma opção: ")
         
@@ -29,8 +32,20 @@ def executar():
             # Importe e execute o módulo correspondente aqui
             from . import tb_profissao
             tb_profissao.executar()
-        
         elif escolha == "5":
+            # Importe e execute o módulo correspondente aqui
+            from . import tb_pet
+            tb_pet.executar()
+        elif escolha == "6":
+            # Importe e execute o módulo correspondente aqui
+            from . import tb_raca
+            tb_raca.executar()
+        elif escolha == "7":
+            # Importe e execute o módulo correspondente aqui
+            from . import tb_especie
+            tb_especie.executar()
+        
+        elif escolha == "8":
             print("Encerrando o programa.")
             break
         else:
