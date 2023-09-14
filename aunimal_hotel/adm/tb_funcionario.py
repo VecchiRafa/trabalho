@@ -58,39 +58,6 @@ def listar_profissoes(session):
     for profissao in profissoes:
         print(f"ID Profissão: {profissao.id_profissao}, Profissão: {profissao.profissao}, Descrição: {profissao.descricao}")
 
-def adicionar_profissao(session):
-    # Coletar informações da profissão
-    profissao = input("Digite o nome da profissão: ")
-    descricao = input("Digite a descrição da profissão (opcional): ")
-
-    # Criar uma nova instância de Profissao
-    nova_profissao = Profissao(profissao=profissao, descricao=descricao)
-
-    try:
-        # Adicionar a profissão à sessão e fazer o commit
-        session.add(nova_profissao)
-        session.commit()
-        print("Profissão adicionada com sucesso!")
-    except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        session.rollback()
-        print(f"Erro ao adicionar a profissão: {e}")
-
-def remover_profissao(session):
-    profissao_id = input("Digite o ID da profissão que deseja excluir: ")
-
-    try:
-        # Buscar a profissão pelo ID
-        profissao = session.query(Profissao).filter(Profissao.id_profissao == profissao_id).one()
-
-        # Remover a profissão
-        session.delete(profissao)
-        session.commit()
-        print("Profissão excluída com sucesso!")
-    except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        session.rollback()
-        print(f"Erro ao excluir a profissão: {e}")
 
 def listar_funcionarios(session):
     # Consultar funcionários com informações de profissões e associados
@@ -99,7 +66,7 @@ def listar_funcionarios(session):
     for funcionario, profissao, associado in funcionarios:
         print(f"ID Funcionário: {funcionario.id_funcionario}, "
               f"Profissão: {profissao.profissao}, "
-              f"Data Admissão: {funcionario.data_admicao}, "
+              f"Data Admissão: {funcionario.data_admissao}, "
               f"Salário: {funcionario.salario}, "
               f"Estado Civil: {funcionario.estado_civil}, "
               f"ID Associado: {associado.id_associado}, "
@@ -110,34 +77,6 @@ def listar_funcionarios(session):
               f"Sexo Associado: {associado.sexo}, "
               f"Email Associado: {associado.email}")
 
-#def adicionar_funcionario(session):
-    # Coletar informações do funcionário
-   # data_admicao = datetime.now()
-    #salario = float(input("Digite o salário: "))
-    #estado_civil = input("Digite o estado civil: ")
-
-    # Coletar informações da profissão disponível
-    #listar_profissoes(session)
-    #profissao_id = input("Digite o ID da profissão desejada: ")
-
-    # Coletar informações do associado disponível
-    #listar_associados(session)
-    #associado_id = input("Digite o ID do associado desejado: ")
-
-    # Criar uma nova instância de Funcionario
-    #novo_funcionario = Funcionario(data_admicao=data_admicao, salario=salario, estado_civil=estado_civil,
-                                   #id_associado=associado_id, id_profissao=profissao_id)
-
-    #try:
-        # Adicionar o funcionário à sessão e fazer o commit
-        #session.add(novo_funcionario)
-        #session.commit()
-        #print("Funcionário adicionado com sucesso!")
-    #except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        #session.rollback()
-        #print(f"Erro ao adicionar o funcionário: {e}")
-# ARRUMAR 
 def adicionar_funcionario(session):
     # Coletar informações do funcionário
     salario = float(input("Digite o salário: "))
@@ -154,7 +93,15 @@ def adicionar_funcionario(session):
         # Coletar informações do novo associado
         nome = input("Digite o nome do associado: ")
         nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
-        cpf = input("Digite o CPF: ")
+
+        # Verificar o CPF
+        while True:
+            cpf = input("Digite o CPF (11 dígitos): ")
+            if len(cpf) == 11 and cpf.isdigit():
+                break
+            else:
+                print("CPF inválido. O CPF deve conter exatamente 11 dígitos numéricos.")
+
         rg = input("Digite o RG: ")
         sexo = input("Digite o sexo (M/F/NI): ")
         email = input("Digite o email: ")
@@ -171,6 +118,7 @@ def adicionar_funcionario(session):
             
             # Obter o ID_associado recém-gerado
             associado_id = novo_associado.id_associado
+            print(f"Associado adicionado com sucesso. ID Associado: {associado_id}")
         except Exception as e:
             # Em caso de erro, faça o rollback e mostre a mensagem de erro
             session.rollback()
@@ -195,21 +143,58 @@ def adicionar_funcionario(session):
         print(f"Erro ao adicionar o funcionário: {e}")
 
 
-def remover_funcionario(session):
-    funcionario_id = input("Digite o ID do funcionário que deseja excluir: ")
+    # Coletar informações da profissão disponível
+    listar_profissoes(session)
+    profissao_id = input("Digite o ID da profissão desejada: ")
+
+    # Criar uma nova instância de Funcionario
+    novo_funcionario = Funcionario(id_profissao=profissao_id, data_admissao=datetime.now(), salario=salario, estado_civil=estado_civil,
+                                   id_associado=associado_id)
 
     try:
-        # Buscar o funcionário pelo ID
-        funcionario = session.query(Funcionario).filter(Funcionario.id_funcionario == funcionario_id).one()
-
-        # Remover o funcionário
-        session.delete(funcionario)
+        # Adicionar o funcionário à sessão e fazer o commit
+        session.add(novo_funcionario)
         session.commit()
-        print("Funcionário excluído com sucesso!")
+        print("Funcionário adicionado com sucesso!")
     except Exception as e:
         # Em caso de erro, faça o rollback e mostre a mensagem de erro
         session.rollback()
-        print(f"Erro ao excluir o funcionário: {e}")
+        print(f"Erro ao adicionar o funcionário: {e}")
+
+
+def remover_funcionario(session):
+    try:
+        # Consultar funcionários
+        funcionarios = session.query(Funcionario).all()
+        
+        if not funcionarios:
+            print("Não há funcionários para excluir.")
+            return
+
+        print("Funcionários disponíveis para exclusão:")
+        for funcionario in funcionarios:
+            print(f"ID Funcionário: {funcionario.id_funcionario}, Nome: {funcionario.associado.nome}")
+
+        funcionario_id = input("Digite o ID do funcionário que deseja excluir ou '0' para cancelar: ")
+
+        if funcionario_id == '0':
+            print("Operação de exclusão cancelada.")
+        else:
+            try:
+                # Buscar o funcionário pelo ID
+                funcionario = session.query(Funcionario).filter(Funcionario.id_funcionario == funcionario_id).one()
+
+                # Remover o funcionário
+                session.delete(funcionario)
+                session.commit()
+                print("Funcionário excluído com sucesso!")
+            except Exception as e:
+                # Em caso de erro, faça o rollback e mostre a mensagem de erro
+                session.rollback()
+                print(f"Erro ao excluir o funcionário: {e}")
+    except Exception as e:
+        print(f"Erro ao listar funcionários: {e}")
+
 
 def listar_associados(session):
     # Consultar todos os associados disponíveis
@@ -233,14 +218,10 @@ def executar():
         print(50 * "=")
         print()
         print("\nOpções:")
-        print("1. Listar profissões")
-        print("2. Adicionar profissão")
-        print("3. Remover profissão")
-        print("4. Listar funcionários")
-        print("5. Adicionar funcionário")
-        print("6. Remover funcionário")
-        print("7. Listar associados")
-        print("8. Sair")
+        print("1. Listar funcionários")
+        print("2. Adicionar funcionário")
+        print("3. Remover funcionário")
+        print("4. Sair")
 
         escolha = input("Escolha uma opção: ")
 
@@ -248,38 +229,18 @@ def executar():
             print()
             print(50 * "=")
             print()
-            listar_profissoes(session)
+            listar_funcionarios(session)
         elif escolha == "2":
             print()
             print(50 * "=")
             print()
-            adicionar_profissao(session)
+            adicionar_funcionario(session)
         elif escolha == "3":
             print()
             print(50 * "=")
             print()
-            remover_profissao(session)
-        elif escolha == "4":
-            print()
-            print(50 * "=")
-            print()
-            listar_funcionarios(session)
-        elif escolha == "5":
-            print()
-            print(50 * "=")
-            print()
-            adicionar_funcionario(session)
-        elif escolha == "6":
-            print()
-            print(50 * "=")
-            print()
             remover_funcionario(session)
-        elif escolha == "7":
-            print()
-            print(50 * "=")
-            print()
-            listar_associados(session)
-        elif escolha == "8":
+        elif escolha == "4":
             print()
             print(50 * "=")
             print()
