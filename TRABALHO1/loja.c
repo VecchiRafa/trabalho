@@ -54,12 +54,13 @@ int main()
     }
 
     // TOTAL DOS PRODUTOS ==================================================
-    fclose(arq_venda);
+    fclose(arq_venda); 
     arq_venda = fopen("vendas.txt", "r");
 
     float productTotals[11] = {0.0};
     float totalGeralVendido = 0.0; // Inicializa o total geral com zero
 
+    // loop para fazer o calculo do total dos produtos vendidos
     while (fgets(linha_venda, sizeof(linha_venda), arq_venda) != NULL) {
         int elementosLidos, multiplicador;
         sscanf(linha_venda, "%*d %d %d", &elementosLidos, &multiplicador);
@@ -103,6 +104,7 @@ int main()
         totalGeralVendido += (float)elementosLidos * multiplicador;  
     }
     
+    // imprime o valor total geral dos produtos
     printf("\n\nTotal geral vendido: %.2f", totalGeralVendido);
 
     // Imprimir o total de vendas de cada produto
@@ -148,7 +150,7 @@ int main()
     fgets(linha_venda, sizeof(linha_venda), arq_venda);
 
     // Mapa para rastrear as vendas de cada vendedor
-    float vendasPorVendedor[100] = {0.0}; // Suponha que haja 100 vendedores no máximo
+    float vendasPorVendedor[100] = {0.0}; 
 
     // Mapa para mapear códigos de vendedor para nomes
     char nomesVendedores[100][50]; // Suponha que os nomes dos vendedores tenham no máximo 50 caracteres
@@ -167,6 +169,7 @@ int main()
 
         // Calcula o valor total da venda
         float valorVenda = 0.0;
+        
         switch (codigoProduto) {
             case 108:
                 valorVenda = Chocolate * quantidade;
