@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
 
-const float Chocolate = 108; 
+const float Chocolate = 25.00;
 const float Marshmallow = 10.50;
 const float Brownie = 30.00;
 const float Ice_cream = 15.00;
@@ -19,17 +19,13 @@ int main()
     FILE* arq_venda = fopen("vendas.txt", "r");
     FILE* arq_produto = fopen("produtos.txt", "r");
     FILE* arq_vendedor = fopen("vendedores.txt", "r");
-    FILE* arq_saida = fopen("totais.txt", "w");
+    FILE* arq_saida = freopen("totais.txt", "w", stdout);
 
     char linha_venda[1024]; // Buffer para armazenar a linha lida
     char linha_produto[1024];
     char linha_vendedor[1024];
 
-    //float somaTotal = 0;
-    //float totalProdutos = 0;
-    //float totalVendedor = 0;
-
-    printf("Log de vendas:\n");
+    printf("\n\nLog de vendas:\n");
 
     // Ignora a primeira linha do arquivo de vendas
     fgets(linha_venda, sizeof(linha_venda), arq_venda);
@@ -57,68 +53,166 @@ int main()
         printf("[%d] %s", contador_linhas, linha_vendedor);
     }
 
-    // arrumar
-
-
-    printf("\n\n");
-    printf("Dados das vendas:\n");
-
-    // Fechar e reabrir o arquivo de vendas para ler novamente
+    // TOTAL DOS PRODUTOS ==================================================
     fclose(arq_venda);
     arq_venda = fopen("vendas.txt", "r");
-    
-    int contador_linhas = 0;
 
-     while (fgets(linha_venda, sizeof(linha_venda), arq_venda) != NULL) {
+    float productTotals[11] = {0.0};
+    float totalGeralVendido = 0.0; // Inicializa o total geral com zero
+
+    while (fgets(linha_venda, sizeof(linha_venda), arq_venda) != NULL) {
         int elementosLidos, multiplicador;
         sscanf(linha_venda, "%*d %d %d", &elementosLidos, &multiplicador);
 
-        if (elementosLidos == 108) {
-            float resultado = Chocolate * multiplicador;
-            printf("Chocolate = %.2f\n", resultado);
+        switch (elementosLidos) {
+            case 108:
+                productTotals[0] += Chocolate * multiplicador;
+                break;
+            case 209:
+                productTotals[1] += Marshmallow * multiplicador;
+                break;
+            case 308:
+                productTotals[2] += Brownie * multiplicador;
+                break;
+            case 407:
+                productTotals[3] += Ice_cream * multiplicador;
+                break;
+            case 506:
+                productTotals[4] += Cake * multiplicador;
+                break;
+            case 605:
+                productTotals[5] += Donut * multiplicador;
+                break;
+            case 704:
+                productTotals[6] += Cookie * multiplicador;
+                break;
+            case 803:
+                productTotals[7] += Candy * multiplicador;
+                break;
+            case 902:
+                productTotals[8] += Cupcake * multiplicador;
+                break;
+            case 101:
+                productTotals[9] += Pudding * multiplicador;
+                break;
+            default:
+                break;
         }
-        if (elementosLidos == 209) {
-            float resultado = Marshmallow * multiplicador;
-            printf("Marshmallow = %.2f\n", resultado);
-        }
-        if (elementosLidos == 308) {
-            float resultado = Brownie * multiplicador;
-            printf("Brownie = %.2f\n", resultado);
-        }
-        if (elementosLidos == 407) {
-            float resultado = Ice_cream * multiplicador;
-            printf("Ice cream = %.2f\n", resultado);
-        }
-        if (elementosLidos == 506) {
-            float resultado = Cake * multiplicador;
-            printf("Cake = %.2f\n", resultado);
-        }
-        if (elementosLidos == 605) {
-            float resultado = Donut * multiplicador;
-            printf("Donut = %.2f\n", resultado);
-        }
-        if (elementosLidos == 704) {
-            float resultado = Cookie * multiplicador;
-            printf("Cookie = %.2f\n", resultado);
-        }
-        if (elementosLidos == 803) {
-            float resultado = Candy * multiplicador;
-            printf("Candy = %.2f\n", resultado);
-        }
-        if (elementosLidos == 902) {
-            float resultado = Cupcake * multiplicador;
-            printf("Cupcake = %.2f\n", resultado);
-        }
-        if (elementosLidos == 101) {
-            float resultado = Pudding * multiplicador;
-            printf("Pudding = %.2f\n",resultado);
-        }
-        contador_linhas++;
-       
+
+        // Acumula o valor da venda ao total geral
+        totalGeralVendido += (float)elementosLidos * multiplicador;  
+    }
+    
+    printf("\n\nTotal geral vendido: %.2f", totalGeralVendido);
+
+    // Imprimir o total de vendas de cada produto
+    printf("\n\nTotal de vendas de cada produto:\n");
+
+    if (productTotals[0] > 0.0) {
+        printf("Produto 108 (Chocolate): %.2f\n", productTotals[0]);
+    }
+    if (productTotals[1] > 0.0) {
+        printf("Produto 209 (Marshmallow): %.2f\n", productTotals[1]);
+    }
+    if (productTotals[2] > 0.0) {
+        printf("Produto 308 (Brownie): %.2f\n", productTotals[2]);
+    }
+    if (productTotals[3] > 0.0) {
+        printf("Produto 407 (Ice cream): %.2f\n", productTotals[3]);
+    }
+    if (productTotals[4] > 0.0) {
+        printf("Produto 506 (Cake): %.2f\n", productTotals[4]);
+    }
+    if (productTotals[5] > 0.0) {
+        printf("Produto 605 (Donut): %.2f\n", productTotals[5]);
+    }
+    if (productTotals[6] > 0.0) {
+        printf("Produto 704 (Cookie): %.2f\n", productTotals[6]);
+    }
+    if (productTotals[7] > 0.0) {
+        printf("Produto 803 (Candy): %.2f\n", productTotals[7]);
+    }
+    if (productTotals[8] > 0.0) {
+        printf("Produto 902 (Cupcake): %.2f\n", productTotals[8]);
+    }
+    if (productTotals[9] > 0.0) {
+        printf("Produto 101 (Pudding): %.2f\n", productTotals[9]);
+    }
+    // TOTAL DOS VENDEDORES  ==================================================
+
+    fclose(arq_venda);
+    arq_venda = fopen("vendas.txt", "r");
+    fclose(arq_vendedor);
+    arq_vendedor = fopen("vendedores.txt", "r");
+
+     fgets(linha_venda, sizeof(linha_venda), arq_venda);
+
+    // Mapa para rastrear as vendas de cada vendedor
+    float vendasPorVendedor[100] = {0.0}; // Suponha que haja 100 vendedores no máximo
+
+    // Mapa para mapear códigos de vendedor para nomes
+    char nomesVendedores[100][50]; // Suponha que os nomes dos vendedores tenham no máximo 50 caracteres
+
+    // Lê o arquivo de vendedores e mapeia códigos para nomes
+    while (fgets(linha_vendedor, sizeof(linha_vendedor), arq_vendedor) != NULL) {
+        int codigoVendedor;
+        char nome[50];
+        sscanf(linha_vendedor, "%d %s", &codigoVendedor, nome);
+        strcpy(nomesVendedores[codigoVendedor], nome);
     }
 
-    //printf("\n\n");
-    //printf("Total geral vendido: %d", somaTotal);
+    while (fgets(linha_venda, sizeof(linha_venda), arq_venda) != NULL) {
+        int codigoVendedor, codigoProduto, quantidade;
+        sscanf(linha_venda, "%d %d %d", &codigoVendedor, &codigoProduto, &quantidade);
+
+        // Calcula o valor total da venda
+        float valorVenda = 0.0;
+        switch (codigoProduto) {
+            case 108:
+                valorVenda = Chocolate * quantidade;
+                break;
+            case 209:
+                valorVenda = Marshmallow * quantidade;
+                break;
+            case 308:
+                valorVenda = Brownie * quantidade;
+                break;
+            case 407:
+                valorVenda = Ice_cream * quantidade;
+                break;
+            case 506:
+                valorVenda = Cake * quantidade;
+                break;
+            case 605:
+                valorVenda = Donut * quantidade;
+                break;
+            case 704:
+                valorVenda = Cookie * quantidade;
+                break;
+            case 803:
+                valorVenda = Candy * quantidade;
+                break;
+            case 902:
+                valorVenda = Cupcake * quantidade;
+                break;
+            case 101:
+                valorVenda = Pudding * quantidade;
+                break;
+            default:
+                break;
+        }
+
+        // Acumula o valor da venda para o vendedor correspondente
+        vendasPorVendedor[codigoVendedor] += valorVenda;
+    }
+
+    // Imprime o total de vendas de cada vendedor com seus nomes
+    printf("\n\nTotal de vendas de cada vendedor:\n");
+    for (int i = 1; i < 100; i++) {
+        if (vendasPorVendedor[i] > 0.0) {
+            printf("Vendedor %d (%s): %.2f\n", i, nomesVendedores[i], vendasPorVendedor[i]);
+        }
+    }
 
     fclose(arq_venda);
     fclose(arq_produto);
