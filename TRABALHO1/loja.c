@@ -145,7 +145,7 @@ int main()
     fclose(arq_vendedor);
     arq_vendedor = fopen("vendedores.txt", "r");
 
-     fgets(linha_venda, sizeof(linha_venda), arq_venda);
+    fgets(linha_venda, sizeof(linha_venda), arq_venda);
 
     // Mapa para rastrear as vendas de cada vendedor
     float vendasPorVendedor[100] = {0.0}; // Suponha que haja 100 vendedores no máximo
