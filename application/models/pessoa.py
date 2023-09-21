@@ -1,13 +1,13 @@
 from models import Base
-from sqlalchemy import DATETIME,INT, DATE, VARCHAR, CHAR, Enum
+from sqlalchemy import DATETIME, DATE, VARCHAR, CHAR, Enum
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.dialects.mysql import INT
+from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime, date
 
 class Pessoa(Base):
     __tablename__ = "pessoa"
     
-    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INT,nullable=False, primary_key=True, autoincrement=True)
+    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER,nullable=False, autoincrement=True, primary_key=True)
     nome: Mapped[str] =  mapped_column(VARCHAR(100), nullable=False)
     nascimento: Mapped[date] = mapped_column(DATE, nullable=False)
     cpf: Mapped[str] = mapped_column(CHAR(11), nullable=False, unique=True)

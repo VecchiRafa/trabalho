@@ -1,5 +1,8 @@
-#from services.database import engine
-#from models import *
+from services.db import session
+from models import *
+from utils.database_utils import create_db
 
-#def create_db():
-    #Base.metadata.create_all(bind=engine)
+if __name__ == "__main__":
+    print("Criando o Banco de Dados!")
+    create_db()
+
