@@ -12,4 +12,3 @@ class Cobranca(Base):
     valor_total: Mapped[float] = mapped_column(DECIMAL(10,2), nullable=False)
     id_reserva: Mapped[int] = mapped_column("id_reserva", INTEGER, ForeignKey(Reserva.id_reserva), nullable=False)
     id_funcionario: Mapped[int] = mapped_column("id_funcionario", INTEGER, ForeignKey(Funcionario.id_funcionario), nullable=False)
-    

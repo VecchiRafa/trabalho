@@ -1,4 +1,4 @@
-from models import Base, Especie, Cliente
+from models import Base, Especie, Cliente 
 from sqlalchemy import DATETIME, DECIMAL, VARCHAR, DATE, ForeignKey, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.mysql import INTEGER

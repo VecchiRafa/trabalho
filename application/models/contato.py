@@ -3,6 +3,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.mysql import INTEGER, TINYINT
 
+
 class Contato(Base):
     __tablename__ = "contato"
 

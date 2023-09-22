@@ -11,3 +11,5 @@ class Funcionario(Base):
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
     profissao: Mapped[str] = mapped_column(VARCHAR(100), nullable=False)
     salario: Mapped[float] = mapped_column(DECIMAL(10,2), nullable=False)
+
+    

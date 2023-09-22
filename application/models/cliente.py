@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 
+
 class Cliente(Base):
     __tablename__ = "cliente"
     

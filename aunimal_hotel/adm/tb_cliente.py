@@ -35,7 +35,7 @@ class Cliente(Base):
     def __init__(self, id_associado):
         self.id_associado = id_associado
 
-def listar_clientes(session):
+def listar_clientes(session):  
     # Consultar clientes e associados com informações combinadas
     clientes_associados = session.query(Cliente, Associado).join(Associado).all()
     
