@@ -5,20 +5,25 @@ from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from services.db import connection
 
+
 class Funcionario(Base):
     __tablename__ = "funcionario"
 
-    id_funcionario: Mapped[int] = mapped_column("id_cliente", INTEGER, ForeignKey(Pessoa.id_pessoa), primary_key=True, nullable=False, autoincrement=True)
-    data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
+    id_funcionario: Mapped[int] = mapped_column("id_funcionario", INTEGER, primary_key=True, nullable=False, autoincrement=True)
+    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
+    data_admissao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
     profissao: Mapped[str] = mapped_column(VARCHAR(100), nullable=False)
     salario: Mapped[float] = mapped_column(DECIMAL(10,2), nullable=False)
 
     # Relacionamento para acessar os dados de pessoa
-    pessoa = relationship('Pessoa', backref='cliente')
+    pessoa = relationship('Pessoa', backref='funcionario')
 
-    def __init__(self, id_pessoa, data_criacao):
-        self.id_pessoa = id_pessoa
-        self.data_criacao = data_criacao
+    def __init__(self, id_pessoa, data_admissao, profissao, salario):
+       self.id_pessoa = id_pessoa
+       self.data_admissao = data_admissao
+       self.profissao = profissao
+       self.salario = salario
+ 
 
 def listar_funcionarios(session):
     # Consultar funcionários com informações de profissões e pessoas
@@ -158,7 +163,7 @@ def remover_funcionario(session):
         print(f"Erro ao listar funcionários: {e}")
 
 
-def listar_funcionarios(session):
+def listar_associados(session):
     # Consultar todos os associados disponíveis
     associados = session.query(Pessoa).all()
 
@@ -215,4 +220,4 @@ def executar():
     session.close()
 
 if __name__ == "__main__":
-    executar()   
+    executar()    

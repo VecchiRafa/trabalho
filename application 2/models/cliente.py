@@ -5,18 +5,21 @@ from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from services.db import connection
 
+
 class Cliente(Base):
     __tablename__ = "cliente"
     
-    id_cliente: Mapped[int] = mapped_column("id_cliente", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False, autoincrement=True, primary_key=True)
+    id_cliente: Mapped[int] = mapped_column("id_cliente", INTEGER, nullable=False, autoincrement=True, primary_key=True)
+    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
-
+    
     # Relacionamento para acessar os dados de pessoa
     pessoa = relationship('Pessoa', backref='cliente')
 
     def __init__(self, id_pessoa, data_criacao):
         self.id_pessoa = id_pessoa
         self.data_criacao = data_criacao
+
 
 def tempo_cliente(data_criacao):
     data_atual = datetime.now()
@@ -40,6 +43,7 @@ def listar_clientes(session):
         dias, meses, anos = tempo_cliente(cliente.data_criacao)
         print(f"Cliente há {dias} dias, {meses} meses e {anos} anos.")
 
+        
 
 def adicionar_cliente(session):
     # Coletar informações da pessoa
