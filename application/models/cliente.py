@@ -17,7 +17,7 @@ class Cliente(Base):
     def __init__(self, id_pessoa, data_criacao):
         self.id_pessoa = id_pessoa
         self.data_criacao = data_criacao
-
+    
 def tempo_cliente(data_criacao):
     data_atual = datetime.now()
     periodo_cliente = data_atual - data_criacao
@@ -146,7 +146,6 @@ def editar_cliente(session):
         # Em caso de erro, faça o rollback e mostre a mensagem de erro
         session.rollback()
         print(f"Erro ao editar o cliente: {e}")
-
 
 def executar():
     # Iniciar uma sessão

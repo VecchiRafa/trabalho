@@ -33,4 +33,4 @@ def main():
             redirecionar_opcao(escolha)
         
 if __name__ == "__main__":
-    main()
+    main()  

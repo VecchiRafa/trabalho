@@ -23,41 +23,41 @@ def executar():
         
         if escolha == "1":
             # Importe e execute o módulo correspondente aqui
-            from . import Servico
-            Servico.executar()
+            from . import servico
+            servico.executar()
         elif escolha == "2":
-            from . import Cliente
-            Cliente.executar()
+            from . import cliente
+            cliente.executar()
         elif escolha == "3":
-            from . import Funcionario
-            Funcionario.executar()
+            from . import funcionario
+            funcionario.executar()
         elif escolha == "4":
-            from . import Reserva
-            Reserva.executar()
+            from . import reserva
+            reserva.executar()
         elif escolha == "5":
-            from . import Pet
-            Pet.executar()
+            from . import pet
+            pet.executar()
         elif escolha == "6":
-            from . import Raca
-            Raca.executar()
+            from . import raca
+            raca.executar()
         elif escolha == "7":
-            from . import Especie
-            Especie.executar()
+            from . import especie
+            especie.executar()
         elif escolha == "8":
-            from . import Pessoa
-            Pessoa.executar()
+            from . import pessoa
+            pessoa.executar()
         elif escolha == "9":
-            from . import Pagamento
-            Pagamento.executar()
+            from . import pagamento
+            pagamento.executar()
         elif escolha == "10":
-            from . import Endereco
-            Endereco.executar()
+            from . import endereco
+            endereco.executar()
         elif escolha == "11":
-            from . import Contato
-            Contato.executar()
+            from . import contato
+            contato.executar()
         elif escolha == "12":
-            from . import Cobranca
-            Cobranca.executar()
+            from . import cobranca
+            cobranca.executar()
         elif escolha == "13":
             print("Encerrando o programa.")
             break
