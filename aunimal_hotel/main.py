@@ -2,7 +2,7 @@ import sys
 
 def redirecionar_opcao(opcao):
     if opcao == "1":
-        import adm.tabelas as modulo
+        import modles.tabelas as modulo
         modulo.executar()
     elif opcao == "4":
         print("Encerrando o programa.")
