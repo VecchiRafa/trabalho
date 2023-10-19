@@ -3,6 +3,9 @@ from models import *
 from utils.database_utils import create_db
 import sys
 
+
+sys.path.append('application/models')
+
 if __name__ == "__main__":
     print("Criando o Banco de Dados!")
     create_db()
@@ -19,14 +22,12 @@ def redirecionar_opcao(opcao):
 def main():
     while True:
         print("\nOpções:")
-        print("1. Adm")
-        print("2. Funcionário")
-        print("3. Cliente")
-        print("4. Sair")
+        print("1. Tabelas")
+        print("2. Sair")
         
         escolha = input("Escolha uma opção: ")
         
-        if escolha == "4":
+        if escolha == "2":   
             print("Encerrando o programa.")
             break
         else:

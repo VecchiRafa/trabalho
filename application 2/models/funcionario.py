@@ -5,7 +5,6 @@ from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from services.db import connection
 
-
 class Funcionario(Base):
     __tablename__ = "funcionario"
 

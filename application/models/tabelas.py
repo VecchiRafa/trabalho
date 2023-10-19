@@ -2,7 +2,7 @@ def executar():
     while True:
         print(50*"=")
         print("")
-        print("TELA ADM")
+        print("TABELAS")
         print("")
         print("\nOpções:")
         print("1. Serviços")

@@ -2,24 +2,22 @@ from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime, F
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-
-# Configuração da conexão com o banco de dados usando SQLAlchemy
-engine = create_engine('mysql://root:Brother25525&@localhost/aunimalhotel')
-Session = sessionmaker(bind=engine)
+from conect_bd import Session
 
 # Crie uma instância da classe Base
 Base = declarative_base()
 
-class Associado(Base):
-    __tablename__ = "associado"
+class Pessoa(Base):
+    __tablename__ = "pessoa"
     
-    id_associado = Column(Integer, primary_key=True, autoincrement=True)
+    id_pessoa = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100), nullable=False)
     nascimento = Column(Date, nullable=False)
     cpf = Column(String(11), nullable=False, unique=True)
     rg = Column(String(11), nullable=False, unique=True)
     sexo = Column(String(2), nullable=False)
     email = Column(String(50), nullable=False, unique=True)
+    est_civil = Column(String(10), nullable=False)
     nacionalidade = Column(String(100), nullable=False, default='Brasil')
     data_criacao = Column(DateTime, nullable=False)
 
@@ -27,47 +25,40 @@ class Cliente(Base):
     __tablename__ = "cliente"
     
     id_cliente = Column(Integer, primary_key=True, autoincrement=True)
-    id_associado = Column(Integer, ForeignKey('associado.id_associado'), nullable=False)
+    id_pessoa = Column(Integer, ForeignKey('pessoa.id_pessoa'), nullable=False)
+    data_criacao = Column(DateTime, nullable=False, default=datetime.now())
     
-    # Adicione um relacionamento para acessar os dados do associado
-    associado = relationship('Associado', backref='cliente')
+    # Adicione um relacionamento para acessar os dados da pessoa
+    pessoa = relationship('Pessoa', backref='cliente')
 
-    def __init__(self, id_associado):
-        self.id_associado = id_associado
-
-def listar_clientes(session):  
-    # Consultar clientes e associados com informações combinadas
-    clientes_associados = session.query(Cliente, Associado).join(Associado).all()
-    
-    for cliente, associado in clientes_associados:
-        print(f"ID Cliente: {cliente.id_cliente}, Nome: {associado.nome}, CPF: {associado.cpf}, "
-              f"Nascimento: {associado.nascimento}, Sexo: {associado.sexo}, Email: {associado.email}")
+    def __init__(self, id_pessoa):
+        self.id_pessoa = id_pessoa
 
 def adicionar_cliente(session):
-    # Coletar informações do associado
-    nome = input("Digite o nome do associado: ")
+    nome = input("Digite o nome da pessoa: ")
     nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
     cpf = input("Digite o CPF: ")
     rg = input("Digite o RG: ")
     sexo = input("Digite o sexo (M/F/NI): ")
     email = input("Digite o email: ")
+    estado_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
     nacionalidade = input("Digite a nacionalidade: ")
     data_criacao = datetime.now()
     
-    # Criar uma nova instância de Associado
-    novo_associado = Associado(nome=nome, nascimento=nascimento, cpf=cpf, rg=rg, sexo=sexo, email=email,
-                               nacionalidade=nacionalidade, data_criacao=data_criacao)
+    # Criar uma nova instância de Pessoa
+    nova_pessoa = Pessoa(nome=nome, nascimento=nascimento, cpf=cpf, rg=rg, sexo=sexo, email=email, est_civil=estado_civil,
+                         nacionalidade=nacionalidade, data_criacao=data_criacao)
     
     try:
-        # Adicionar o associado à sessão e fazer o commit para obter o ID gerado
-        session.add(novo_associado)
+        # Adicionar a pessoa à sessão e fazer o commit para obter o ID gerado
+        session.add(nova_pessoa)
         session.commit()
 
-        # Obter o ID_associado recém-gerado
-        id_associado = novo_associado.id_associado
+        # Obter o ID_pessoa recém-gerado
+        id_pessoa = nova_pessoa.id_pessoa
 
-        # Criar uma nova instância de Cliente associando ao novo associado
-        novo_cliente = Cliente(id_associado=id_associado)
+        # Criar uma nova instância de Cliente associando à nova pessoa
+        novo_cliente = Cliente(id_pessoa=id_pessoa)
         session.add(novo_cliente)
         session.commit()
         
@@ -77,7 +68,19 @@ def adicionar_cliente(session):
         session.rollback()
         print(f"Erro ao adicionar o cliente: {e}")
 
+
+def listar_clientes(session):  
+    # Consultar clientes e pessoas com informações combinadas
+    clientes_pessoas = session.query(Cliente, Pessoa).join(Pessoa).all()
+    
+    for cliente, pessoa in clientes_pessoas:
+        print(f"ID Cliente: {cliente.id_cliente} | Nome: {pessoa.nome} | CPF: {pessoa.cpf}, "
+              f"Nascimento: {pessoa.nascimento} | Sexo: {pessoa.sexo} | Email: {pessoa.email} | estado civil: {pessoa.est_civil} ")
+        
 def deletar_cliente(session):
+    listar_clientes(session)
+    print()
+
     cliente_id = input("Digite o ID do cliente que deseja excluir: ")
 
     try:
@@ -94,40 +97,45 @@ def deletar_cliente(session):
         print(f"Erro ao excluir o cliente: {e}")
 
 def editar_cliente(session):
+    listar_clientes(session)
+    print()
     cliente_id = input("Digite o ID do cliente que deseja editar: ")
 
     try:
         # Buscar o cliente pelo ID
         cliente = session.query(Cliente).filter(Cliente.id_cliente == cliente_id).one()
 
-        # Exibir as informações atuais do associado
-        associado = cliente.associado
-        print(f"Informações atuais do associado:")
-        print(f"Nome: {associado.nome}")
-        print(f"Nascimento: {associado.nascimento}")
-        print(f"CPF: {associado.cpf}")
-        print(f"RG: {associado.rg}")
-        print(f"Sexo: {associado.sexo}")
-        print(f"Email: {associado.email}")
-        print(f"Nacionalidade: {associado.nacionalidade}")
+        # Exibir as informações atuais da pessoa
+        dadosPessoais = cliente.pessoa
+        print(f"Informações atuais da pessoa:")
+        print(f"Nome: {dadosPessoais.nome}")
+        print(f"Nascimento: {dadosPessoais.nascimento}")
+        print(f"CPF: {dadosPessoais.cpf}")
+        print(f"RG: {dadosPessoais.rg}")
+        print(f"Sexo: {dadosPessoais.sexo}")
+        print(f"Email: {dadosPessoais.email}")
+        print(f"Estado Civil: {dadosPessoais.est_civil}")
+        print(f"Nacionalidade: {dadosPessoais.nacionalidade}")
 
-        # Coletar as novas informações do associado
-        nome = input("Digite o novo nome do associado: ")
+        # Coletar as novas informações da pessoa
+        nome = input("Digite o novo nome da pessoa: ")
         nascimento = input("Digite a nova data de nascimento (AAAA-MM-DD): ")
         cpf = input("Digite o novo CPF: ")
         rg = input("Digite o novo RG: ")
         sexo = input("Digite o novo sexo (M/F/NI): ")
         email = input("Digite o novo email: ")
+        est_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
         nacionalidade = input("Digite a nova nacionalidade: ")
 
-        # Atualizar as informações do associado
-        associado.nome = nome
-        associado.nascimento = nascimento
-        associado.cpf = cpf
-        associado.rg = rg
-        associado.sexo = sexo
-        associado.email = email
-        associado.nacionalidade = nacionalidade
+        # Atualizar as informações da pessoa
+        dadosPessoais.nome = nome
+        dadosPessoais.nascimento = nascimento
+        dadosPessoais.cpf = cpf
+        dadosPessoais.rg = rg
+        dadosPessoais.sexo = sexo
+        dadosPessoais.email = email
+        dadosPessoais.est_civil = est_civil
+        dadosPessoais.nacionalidade = nacionalidade
 
         session.commit()
         print("Cliente atualizado com sucesso!")

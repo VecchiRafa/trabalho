@@ -1,6 +1,7 @@
 from models import *
 from utils.database_utils import create_db
 import sys
+sys.path.append('application 2/models')
 
 if __name__ == "__main__":
     print("Criando o Banco de Dados!")
@@ -26,7 +27,7 @@ def main():
         
         escolha = input("Escolha uma opção: ")
         
-        if escolha == "8":
+        if escolha == "4":
             print("Encerrando o programa.")
             break
         else:

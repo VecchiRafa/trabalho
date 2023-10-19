@@ -3,22 +3,23 @@ from sqlalchemy import DECIMAL, ForeignKey, DATETIME, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
-from services.db import connection
+from services.db import Session
 
 class Funcionario(Base):
     __tablename__ = "funcionario"
 
-    id_funcionario: Mapped[int] = mapped_column("id_cliente", INTEGER, ForeignKey(Pessoa.id_pessoa), primary_key=True, nullable=False, autoincrement=True)
+    id_funcionario: Mapped[int] = mapped_column("id_funcionario", INTEGER, ForeignKey(Pessoa.id_pessoa), primary_key=True, nullable=False, autoincrement=True)
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
     profissao: Mapped[str] = mapped_column(VARCHAR(100), nullable=False)
     salario: Mapped[float] = mapped_column(DECIMAL(10,2), nullable=False)
 
     # Relacionamento para acessar os dados de pessoa
-    pessoa = relationship('Pessoa', backref='cliente')
+    pessoa = relationship('Pessoa', backref='funcionario')
 
-    def __init__(self, id_pessoa, data_criacao):
-        self.id_pessoa = id_pessoa
-        self.data_criacao = data_criacao
+    def __init__(self, data_admissao, profissao, salario):
+       self.data_admissao = data_admissao
+       self.profissao = profissao
+       self.salario = salario
 
 def listar_funcionarios(session):
     # Consultar funcionários com informações de profissões e pessoas
@@ -173,7 +174,7 @@ def listar_funcionarios(session):
 
 def executar():
     # Iniciar uma sessão
-    session = connection
+    session = Session()
 
     while True:
         print()

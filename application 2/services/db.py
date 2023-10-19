@@ -1,9 +1,9 @@
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session,  sessionmaker
 from urllib.parse import quote
 
-password = "2n#*uB?w!r_O"
+password = "Brother25525&"
 instance = f"mysql+pymysql://root:{quote(password)}@localhost:3306/Auunimal"
 
 if not database_exists(url=instance):
@@ -11,3 +11,4 @@ if not database_exists(url=instance):
 
 engine = create_engine(url=instance, echo=True)
 session = Session(bind=engine, autocommit=False, autoflush=True)
+Session = sessionmaker(bind=engine)

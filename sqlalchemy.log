@@ -1,0 +1,223 @@
+INFO:sqlalchemy.engine.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@sql_mode
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@lower_case_table_names
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pessoa`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cliente`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`raca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`especie`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pagamento`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`endereco`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`contato`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca_forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[generated in 0.00393s] {}
+INFO:sqlalchemy.engine.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@sql_mode
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@lower_case_table_names
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pessoa`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cliente`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`raca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`especie`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pagamento`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`endereco`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`contato`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca_forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[generated in 0.00246s] {}
+INFO:sqlalchemy.engine.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@sql_mode
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@lower_case_table_names
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pessoa`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cliente`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`raca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`especie`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pagamento`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`endereco`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`contato`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca_forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[generated in 0.00160s] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 1.804s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 2.668s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 2.937s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 3.204s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 3.451s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 3.668s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 3.931s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT DATABASE()
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@sql_mode
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:SELECT @@lower_case_table_names
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pessoa`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cliente`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`raca`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`especie`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pagamento`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`endereco`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`contato`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`cobranca_forma`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`funcionario_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`pet_reserva`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:DESCRIBE `aunimal_hotel_pettt`.`reserva_servico`
+INFO:sqlalchemy.engine.Engine:[raw sql] {}
+INFO:sqlalchemy.engine.Engine:COMMIT
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[generated in 0.00614s] {}
+INFO:sqlalchemy.engine.Engine:INSERT INTO pessoa (nome, nascimento, cpf, rg, sexo, email, est_civil, nacionalidade, data_criacao) VALUES (%(nome)s, %(nascimento)s, %(cpf)s, %(rg)s, %(sexo)s, %(email)s, %(est_civil)s, %(nacionalidade)s, %(data_criacao)s)
+INFO:sqlalchemy.engine.Engine:[generated in 0.00099s] {'nome': 'sirvio', 'nascimento': '1111-23-23', 'cpf': '12345678901', 'rg': '14235678', 'sexo': 'M', 'email': 'emmvivmvsv', 'est_civil': 'Sorteiro', 'nacionalidade': 'sss', 'data_criacao': datetime.datetime(2023, 10, 18, 15, 18, 23, 291566)}
+INFO:sqlalchemy.engine.Engine:ROLLBACK
+INFO:sqlalchemy.engine.Engine:BEGIN (implicit)
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 65.24s ago] {}
+INFO:sqlalchemy.engine.Engine:SELECT cliente.id_cliente AS cliente_id_cliente, cliente.data_criacao AS cliente_data_criacao, pessoa.id_pessoa AS pessoa_id_pessoa, pessoa.nome AS pessoa_nome, pessoa.nascimento AS pessoa_nascimento, pessoa.cpf AS pessoa_cpf, pessoa.rg AS pessoa_rg, pessoa.sexo AS pessoa_sexo, pessoa.email AS pessoa_email, pessoa.est_civil AS pessoa_est_civil, pessoa.nacionalidade AS pessoa_nacionalidade, pessoa.data_criacao AS pessoa_data_criacao 
+FROM cliente INNER JOIN pessoa ON pessoa.id_pessoa = cliente.id_cliente
+INFO:sqlalchemy.engine.Engine:[cached since 67.24s ago] {}
