@@ -12,6 +12,12 @@ def redirecionar_opcao(opcao):
 
 def main():
     while True:
+        print()
+        print()
+        print("====Bem vindo====")
+        print()
+        print("escolha uma das opções abaixo!!")
+        print()
         print("\nOpções:")
         print("1. tabelas")
         print("2. Sair")

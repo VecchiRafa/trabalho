@@ -12,7 +12,8 @@ def executar():
         print("5. pet")
         print("6. raca")
         print("7. especie")
-        print("8. Sair")
+        print("8. endereço")
+        print("9. Sair")
         
         escolha = input("Escolha uma opção: ")
         
@@ -44,8 +45,12 @@ def executar():
             # Importe e execute o módulo correspondente aqui
             from . import tb_especie
             tb_especie.executar()
-        
         elif escolha == "8":
+            # Importe e execute o módulo correspondente aqui
+            from . import tb_endereco
+            tb_endereco.executar()
+        
+        elif escolha == "9":
             print("Encerrando o programa.")
             break
         else:

@@ -1,10 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, Enum, ForeignKey, String
-from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
-from services.conect_bd import Session
+from sqlalchemy.orm import relationship
+from services.conect_bd import Session, Base
 
-# Crie uma instância da classe Base
-Base = declarative_base()
 
 # tabela especie:
 
@@ -24,7 +21,7 @@ class Especie(Base):
 # tabela raça:
 
 class Raca(Base):
-    __tablename__ = "raca"
+    __tablename__ = "raca" 
 
     id_raca = Column(Integer, primary_key=True, autoincrement=True)
     classificacao = Column(String(100), nullable=False)
@@ -54,12 +51,16 @@ def adicionar_especie(session):
         # Em caso de erro, faça o rollback e mostre a mensagem de erro
         session.rollback()
         print(f"Erro ao adicionar a espécie: {e}")
+#========================================================================================================
+#listar especies.
 
 def listar_especies(session):  
     especies = session.query(Especie).all()
     
     for especie in especies:
         print(f"ID Espécie: {especie.id_especie} | Tipo: {especie.tipo} | ID Raça: {especie.id_raca}")
+
+#========================================================================================================
 
 def deletar_especie(session):
     listar_especies(session)
@@ -81,6 +82,7 @@ def deletar_especie(session):
         print(f"Erro ao excluir a espécie: {e}")
 
 def editar_especie(session):
+    
     listar_especies(session)
     print()
     especie_id = int(input("Digite o ID da espécie que deseja editar: "))

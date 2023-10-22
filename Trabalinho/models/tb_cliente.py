@@ -1,11 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime, ForeignKey
-from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from datetime import datetime
-from services.conect_bd import Session
+from services.conect_bd import Session, Base
 
-# Crie uma instância da classe Base
-Base = declarative_base()
+
 
 class Pessoa(Base):
     __tablename__ = "pessoa"
