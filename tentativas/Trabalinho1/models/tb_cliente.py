@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine, ForeignKey, DATETIME
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from tb_pessoa import Pessoa
 # conexão com a BD(Banco de dados) abaixo
@@ -5,7 +8,12 @@ from services.conect_bd import Session, Base
 
 #tabela cliente 
 
-from tabelas import Cliente, datatime
+class Cliente(Base):
+    __tablename__ = "cliente"
+    
+    id_cliente: Mapped[int] = mapped_column("id_cliente", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False, autoincrement=True, primary_key=True)
+    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
+    data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
 
 def adicionar_cliente(session):
     nome = input("Digite o nome da pessoa: ")

@@ -1,6 +1,6 @@
 from models import *
-
-
+import sys
+sys.path.append('Trabalinho/models')
 
 def redirecionar_opcao(opcao):
     if opcao == "1":
