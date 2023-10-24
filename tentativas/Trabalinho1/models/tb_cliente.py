@@ -1,19 +1,12 @@
-from sqlalchemy import create_engine, ForeignKey, DATETIME
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from tb_pessoa import Pessoa
-from sqlalchemy import and_
 # conexão com a BD(Banco de dados) abaixo
 from services.conect_bd import Session, Base
 
-class Cliente(Base):
-    __tablename__ = "cliente"
-    
-    id_cliente: Mapped[int] = mapped_column("id_cliente", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False, autoincrement=True, primary_key=True)
-    id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
-    data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
-    
+#tabela cliente 
+
+from tabelas import Cliente, datatime
+
 def adicionar_cliente(session):
     nome = input("Digite o nome da pessoa: ")
     nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
@@ -41,7 +34,6 @@ def adicionar_cliente(session):
         novo_cliente = Cliente(id_pessoa=id_pessoa)
         session.add(novo_cliente)
         session.commit()
-        print( 50 * "\n=")
         print("\n\nCliente adicionado com sucesso!")
     except Exception as e:
         # Em caso de erro, faça o rollback e mostre a mensagem de erro
@@ -55,9 +47,7 @@ def listar_clientes(session):
 
     # Consultar clientes e pessoas com informações combinadas
     clientes_pessoas = session.query(Cliente, Pessoa).filter(Cliente.id_pessoa == Pessoa.id_pessoa).all()
-    print(5*"\n\n\n")
-    print(50*"=")
-    print()
+   
     for cliente, pessoa in clientes_pessoas:
         print(f"ID Cliente: {cliente.id_cliente} | Nome: {pessoa.nome} | CPF: {pessoa.cpf}, "
               f"Nascimento: {pessoa.nascimento} | Sexo: {pessoa.sexo} | Email: {pessoa.email} | estado civil: {pessoa.est_civil} ")

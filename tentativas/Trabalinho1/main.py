@@ -1,10 +1,10 @@
 from models import *
-
-
+import sys
+sys.path.append('Trabalinho/models')
 
 def redirecionar_opcao(opcao):
     if opcao == "1":
-        import models.tabelas as modulo
+        import models.menu_tbs as modulo
         modulo.executar()
     elif opcao == "4":
         print("Encerrando o programa.")
@@ -14,7 +14,7 @@ def redirecionar_opcao(opcao):
 def main():
     while True:
         print("\nOpções:")
-        print("1. tabelas")
+        print("\n1. menu de operações")
         print("2. Sair")
 
         escolha = input("Escolha uma opção: ")
