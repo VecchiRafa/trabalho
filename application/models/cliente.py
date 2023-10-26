@@ -1,10 +1,10 @@
-from models import Base, Pessoa 
+from base import Base
+from pessoa import Pessoa 
 from sqlalchemy import ForeignKey, DATETIME
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
 from services.db import Session
-#from tabulate import tabulate
 
 class Cliente(Base):
     __tablename__ = "cliente"
@@ -13,12 +13,7 @@ class Cliente(Base):
     id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
 
-    # Relacionamento para acessar os dados de pessoa
-    pessoa = relationship('Pessoa', backref='cliente')
-
-    def __init__(self, id_pessoa, data_criacao):
-        self.id_pessoa = id_pessoa
-        self.data_criacao = data_criacao
+    pessoa = relationship("Pessoa", back_populates="cliente", foreign_keys=[id_pessoa])
     
 def tempo_cliente(data_criacao):
     data_atual = datetime.now()
@@ -31,68 +26,57 @@ def tempo_cliente(data_criacao):
     return dias, meses, anos
 
  
-def listar_clientes(session):  
-    # Consultar clientes e seus dados da tabela pessoas com informações combinadas
-    dados_clientes = session.query(Cliente, Pessoa).join(Pessoa).all()
-    
-    table = []
-    for cliente, dadosPessoais in dados_clientes:
-        dias, meses, anos = tempo_cliente(cliente.data_criacao)
-        table.append([cliente.id_cliente, dadosPessoais.nome, dadosPessoais.cpf, dadosPessoais.rg,
-                      dadosPessoais.nascimento, dadosPessoais.sexo, dadosPessoais.email,
-                      dadosPessoais.est_civil, dadosPessoais.nacionalidade, cliente.data_criacao,
-                      f"{dias} dias, {meses} meses, {anos} anos"])
-
-    headers = ["ID Cliente", "Nome", "CPF", "RG", "Nascimento", "Sexo", "Email", "Estado Civil",
-               "Nacionalidade", "Cadastrado em", "Tempo de Cliente"]
-    
-    print(tabulate(table, headers, tablefmt="pretty"))
-
-
 def adicionar_cliente(session):
-    # Coletar informações da pessoa
-    nome = input("Digite o nome do cliente: ")
+    nome = input("Digite o nome da pessoa: ")
     nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
     cpf = input("Digite o CPF: ")
     rg = input("Digite o RG: ")
     sexo = input("Digite o sexo (M/F/NI): ")
     email = input("Digite o email: ")
-    est_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
-    nacionalidade = input("Digite o país de origem: ")
+    estado_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
+    nacionalidade = input("Digite a nacionalidade: ")
     data_criacao = datetime.now()
     
     # Criar uma nova instância de Pessoa
-    nova_pessoa = Pessoa(nome = nome, 
-                         nascimento = nascimento, 
-                         cpf = cpf, 
-                         rg = rg, 
-                         sexo = sexo, 
-                         email = email, 
-                         est_civil = est_civil, 
-                         nacionalidade = nacionalidade, 
-                         data_criacao = data_criacao)
+    nova_pessoa = Pessoa(nome=nome, nascimento=nascimento, cpf=cpf, rg=rg, sexo=sexo, email=email, est_civil=estado_civil,
+                         nacionalidade=nacionalidade, data_criacao=data_criacao)
     
     try:
-        # Adicionar os dados de pessoa a sessão e fazer o commit para obter o ID gerado
+        # Adicionar a pessoa à sessão e fazer o commit para obter o ID gerado
         session.add(nova_pessoa)
         session.commit()
 
         # Obter o ID_pessoa recém-gerado
         id_pessoa = nova_pessoa.id_pessoa
 
-        # Criar uma nova instância de Cliente associando a nova pessoa
+        # Criar uma nova instância de Cliente associando à nova pessoa
         novo_cliente = Cliente(id_pessoa=id_pessoa)
         session.add(novo_cliente)
         session.commit()
-        print("Cliente adicionado com sucesso!")
-
+        print("\n\nCliente adicionado com sucesso!")
     except Exception as e:
         # Em caso de erro, faça o rollback e mostre a mensagem de erro
         session.rollback()
         print(f"Erro ao adicionar o cliente: {e}")
 
 
+
+def listar_clientes(session):
+    print()
+
+    # Consultar clientes e pessoas com informações combinadas
+    clientes_pessoas = session.query(Cliente, Pessoa).filter(Cliente.id_pessoa == Pessoa.id_pessoa).all()
+   
+    for cliente, pessoa in clientes_pessoas:
+        print(f"ID Cliente: {cliente.id_cliente} | Nome: {pessoa.nome} | CPF: {pessoa.cpf}, "
+              f"Nascimento: {pessoa.nascimento} | Sexo: {pessoa.sexo} | Email: {pessoa.email} | estado civil: {pessoa.est_civil} ")
+
+
+        
 def deletar_cliente(session):
+    listar_clientes(session)
+    print()
+
     cliente_id = input("Digite o ID do cliente que deseja excluir: ")
 
     try:
@@ -108,50 +92,46 @@ def deletar_cliente(session):
         session.rollback()
         print(f"Erro ao excluir o cliente: {e}")
 
-
 def editar_cliente(session):
+    listar_clientes(session)
+    print()
     cliente_id = input("Digite o ID do cliente que deseja editar: ")
 
     try:
-        # Buscar o cliente pelo ID
         cliente = session.query(Cliente).filter(Cliente.id_cliente == cliente_id).one()
 
-        # Exibir as informações atuais da pessoa
-        dadosPessoais = cliente.pessoa
+        dados_pessoais = cliente.pessoa
         print(f"Informações atuais da pessoa:")
-        print(f"Nome: {dadosPessoais.nome}")
-        print(f"Nascimento: {dadosPessoais.nascimento}")
-        print(f"CPF: {dadosPessoais.cpf}")
-        print(f"RG: {dadosPessoais.rg}")
-        print(f"Sexo: {dadosPessoais.sexo}")
-        print(f"Email: {dadosPessoais.email}")
-        print(f"Estado Civil: {dadosPessoais.est_civil}")
-        print(f"Nacionalidade: {dadosPessoais.nacionalidade}")
+        print(f"Nome: {dados_pessoais.nome}")
+        print(f"Nascimento: {dados_pessoais.nascimento}")
+        print(f"CPF: {dados_pessoais.cpf}")
+        print(f"RG: {dados_pessoais.rg}")
+        print(f"Sexo: {dados_pessoais.sexo}")
+        print(f"Email: {dados_pessoais.email}")
+        print(f"Estado Civil: {dados_pessoais.est_civil}")
+        print(f"Nacionalidade: {dados_pessoais.nacionalidade}")
 
-        # Coletar as novas informações da pessoa
         nome = input("Digite o novo nome da pessoa: ")
         nascimento = input("Digite a nova data de nascimento (AAAA-MM-DD): ")
         cpf = input("Digite o novo CPF: ")
         rg = input("Digite o novo RG: ")
         sexo = input("Digite o novo sexo (M/F/NI): ")
         email = input("Digite o novo email: ")
-        est_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
+        est_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIÚVO): ")
         nacionalidade = input("Digite a nova nacionalidade: ")
 
-        # Atualizar as informações da pessoa
-        dadosPessoais.nome = nome
-        dadosPessoais.nascimento = nascimento
-        dadosPessoais.cpf = cpf
-        dadosPessoais.rg = rg
-        dadosPessoais.sexo = sexo
-        dadosPessoais.email = email
-        dadosPessoais.est_civil = est_civil
-        dadosPessoais.nacionalidade = nacionalidade
+        dados_pessoais.nome = nome
+        dados_pessoais.nascimento = nascimento
+        dados_pessoais.cpf = cpf
+        dados_pessoais.rg = rg
+        dados_pessoais.sexo = sexo
+        dados_pessoais.email = email
+        dados_pessoais.est_civil = est_civil
+        dados_pessoais.nacionalidade = nacionalidade
 
         session.commit()
         print("Cliente atualizado com sucesso!")
     except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
         session.rollback()
         print(f"Erro ao editar o cliente: {e}")
 

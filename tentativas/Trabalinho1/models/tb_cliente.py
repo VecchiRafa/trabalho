@@ -1,12 +1,9 @@
-from sqlalchemy import create_engine, ForeignKey, DATETIME
+from sqlalchemy import DATETIME, VARCHAR, ForeignKey, CHAR, SMALLINT
+from sqlalchemy.dialects.mysql import INTEGER, SMALLINT
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.dialects.mysql import INTEGER
-from datetime import datetime
-from tb_pessoa import Pessoa
-# conexão com a BD(Banco de dados) abaixo
 from services.conect_bd import Session, Base
-
-#tabela cliente 
+from datetime import datetime
+from tb_pessoa import Pessoa, listar_pessoa
 
 class Cliente(Base):
     __tablename__ = "cliente"
@@ -15,120 +12,92 @@ class Cliente(Base):
     id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
 
+
 def adicionar_cliente(session):
-    nome = input("Digite o nome da pessoa: ")
-    nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
-    cpf = input("Digite o CPF: ")
-    rg = input("Digite o RG: ")
-    sexo = input("Digite o sexo (M/F/NI): ")
-    email = input("Digite o email: ")
-    estado_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
-    nacionalidade = input("Digite a nacionalidade: ")
-    data_criacao = datetime.now()
-    
-    # Criar uma nova instância de Pessoa
-    nova_pessoa = Pessoa(nome=nome, nascimento=nascimento, cpf=cpf, rg=rg, sexo=sexo, email=email, est_civil=estado_civil,
-                         nacionalidade=nacionalidade, data_criacao=data_criacao)
-    
-    try:
-        # Adicionar a pessoa à sessão e fazer o commit para obter o ID gerado
-        session.add(nova_pessoa)
-        session.commit()
+    nome = input("Nome: ")
+    nascimento = input("Data de Nascimento (AAAA-MM-DD): ")
+    cpf = input("CPF: ")
+    rg = input("RG: ")
+    sexo = input("Sexo (M/F/NI): ")
+    email = input("Email: ")
+    est_civil = input("Estado Civil (SOLTEIRO/CASADO/DIVORCIADO/SEPARADO/VIUVO): ")
+    nacionalidade = input("Nacionalidade (Opcional, pressione Enter para usar 'Brasil'): ")
 
-        # Obter o ID_pessoa recém-gerado
-        id_pessoa = nova_pessoa.id_pessoa
+    nova_pessoa = Pessoa(
+        nome=nome,
+        nascimento=nascimento,
+        cpf=cpf,
+        rg=rg,
+        sexo=sexo,
+        email=email,
+        est_civil=est_civil,
+        nacionalidade=nacionalidade
+    )
 
-        # Criar uma nova instância de Cliente associando à nova pessoa
-        novo_cliente = Cliente(id_pessoa=id_pessoa)
-        session.add(novo_cliente)
-        session.commit()
-        print("\n\nCliente adicionado com sucesso!")
-    except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        session.rollback()
-        print(f"Erro ao adicionar o cliente: {e}")
+    session.add(nova_pessoa)
+    session.commit()
+
+    # Agora pegue o ID da pessoa recém-criada
+    id_pessoa = nova_pessoa.id_pessoa
+
+    novo_cliente = Cliente(id_pessoa=id_pessoa)
+    session.add(novo_cliente)
+    session.commit()
+
+    print("Cliente adicionado com sucesso.")
 
 
-
+# Função para listar todos os clientes
 def listar_clientes(session):
-    print()
-
-    # Consultar clientes e pessoas com informações combinadas
+    # Consultar clientes e informações da tabela Pessoa combinadas
     clientes_pessoas = session.query(Cliente, Pessoa).filter(Cliente.id_pessoa == Pessoa.id_pessoa).all()
-   
+    
     for cliente, pessoa in clientes_pessoas:
-        print(f"ID Cliente: {cliente.id_cliente} | Nome: {pessoa.nome} | CPF: {pessoa.cpf}, "
-              f"Nascimento: {pessoa.nascimento} | Sexo: {pessoa.sexo} | Email: {pessoa.email} | estado civil: {pessoa.est_civil} ")
+        print(f"ID Cliente: {cliente.id_cliente} | ID Pessoa: {cliente.id_pessoa}"
+              f"Nome: {pessoa.nome} | "
+              f"Nascimento: {pessoa.nascimento} | "
+              f"CPF: {pessoa.cpf} | "
+              f"RG: {pessoa.rg} | "
+              f"Sexo: {pessoa.sexo} | "
+              f"Email: {pessoa.email} | "
+              f"Estado Civil: {pessoa.est_civil} | "
+              f"Nacionalidade: {pessoa.nacionalidade} | "
+              f"Data de Criação: {pessoa.data_criacao}"
+              )
+              
 
 
-        
-def deletar_cliente(session):
-    listar_clientes(session)
-    print()
-
-    cliente_id = input("Digite o ID do cliente que deseja excluir: ")
-
-    try:
-        # Buscar o cliente pelo ID
-        cliente = session.query(Cliente).filter(Cliente.id_cliente == cliente_id).one()
-
-        # Remover o cliente
-        session.delete(cliente)
+# Função para atualizar informações de um cliente
+def atualizar_cliente(cliente_id, novo_id_pessoa, session):
+    cliente = session.query(Cliente).filter_by(id_cliente=cliente_id).first()
+    if cliente:
+        cliente.id_pessoa = novo_id_pessoa
         session.commit()
-        print("Cliente excluído com sucesso!")
-    except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        session.rollback()
-        print(f"Erro ao excluir o cliente: {e}")
+        print("Informações do cliente atualizadas com sucesso.")
+    else:
+        print(f"Cliente com ID {cliente_id} não encontrado.")
 
-def editar_cliente(session):
+# Função para excluir um cliente
+def excluir_cliente(session):
     listar_clientes(session)
-    print()
-    cliente_id = input("Digite o ID do cliente que deseja editar: ")
+    cliente_id = int(input("Digite o ID do cliente que deseja deletar: "))
 
-    try:
-        # Buscar o cliente pelo ID
-        cliente = session.query(Cliente).filter(Cliente.id_cliente == cliente_id).one()
+    cliente = session.query(Cliente).filter_by(id_cliente=cliente_id).first()
+    if cliente:
+        pessoa = session.query(Pessoa).filter_by(id_pessoa=cliente.id_pessoa).first()
+        if pessoa:
+            session.delete(cliente)
+            session.delete(pessoa)
+            session.commit()
+            print("Cliente e Pessoa associada excluídos com sucesso.")
+        else:
+            print(f"Pessoa associada ao cliente com ID {cliente_id} não encontrada.")
+    else:
+        print(f"Cliente com ID {cliente_id} não encontrado.")
 
-        # Exibir as informações atuais da pessoa
-        dadosPessoais = cliente.pessoa
-        print(f"Informações atuais da pessoa:")
-        print(f"Nome: {dadosPessoais.nome}")
-        print(f"Nascimento: {dadosPessoais.nascimento}")
-        print(f"CPF: {dadosPessoais.cpf}")
-        print(f"RG: {dadosPessoais.rg}")
-        print(f"Sexo: {dadosPessoais.sexo}")
-        print(f"Email: {dadosPessoais.email}")
-        print(f"Estado Civil: {dadosPessoais.est_civil}")
-        print(f"Nacionalidade: {dadosPessoais.nacionalidade}")
 
-        # Coletar as novas informações da pessoa
-        nome = input("Digite o novo nome da pessoa: ")
-        nascimento = input("Digite a nova data de nascimento (AAAA-MM-DD): ")
-        cpf = input("Digite o novo CPF: ")
-        rg = input("Digite o novo RG: ")
-        sexo = input("Digite o novo sexo (M/F/NI): ")
-        email = input("Digite o novo email: ")
-        est_civil = input("Digite o estado civil (SOLTEIRO, CASADO, DIVORCIADO, SEPARADO, VIUVO): ")
-        nacionalidade = input("Digite a nova nacionalidade: ")
 
-        # Atualizar as informações da pessoa
-        dadosPessoais.nome = nome
-        dadosPessoais.nascimento = nascimento
-        dadosPessoais.cpf = cpf
-        dadosPessoais.rg = rg
-        dadosPessoais.sexo = sexo
-        dadosPessoais.email = email
-        dadosPessoais.est_civil = est_civil
-        dadosPessoais.nacionalidade = nacionalidade
-
-        session.commit()
-        print("Cliente atualizado com sucesso!")
-    except Exception as e:
-        # Em caso de erro, faça o rollback e mostre a mensagem de erro
-        session.rollback()
-        print(f"Erro ao editar o cliente: {e}")
-
+#=====================================================================================================================================
 def executar():
     # Iniciar uma sessão
     session = Session()
@@ -138,7 +107,7 @@ def executar():
         print(50 * "=")
         print()
         print("\nOpções:")
-        print("1. Listar clientes")
+        print("1. Listar cliente")
         print("2. Adicionar cliente")
         print("3. Editar cliente")
         print("4. Deletar cliente")
@@ -160,12 +129,12 @@ def executar():
             print()
             print(50 * "=")
             print()
-            editar_cliente(session)
+            atualizar_cliente(session)
         elif escolha == "4":
             print()
             print(50 * "=")
             print()
-            deletar_cliente(session)
+            excluir_cliente(session)
         elif escolha == "5":
             print()
             print(50 * "=")

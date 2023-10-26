@@ -18,7 +18,7 @@ class Pessoa(Base):
     rg: Mapped[str] = mapped_column(CHAR(11), nullable=False, unique=True)
     sexo: Mapped[Enum('M','F','NI')] = mapped_column(CHAR(2), nullable=False)
     email: Mapped[str] = mapped_column(VARCHAR(50), nullable=False, unique=True)
-    est_civil: Mapped[Enum('SOLTEIRO','CASADO','DIVORCIADO','SEPARADO','VIUVO')] = mapped_column(Enum('SOLTEIRO','CASADO','DIVORCIADO','SEPARADO','VIUVO'), nullable=False)
+    est_civil: Mapped[str] =  mapped_column(VARCHAR(100), nullable=False)
     nacionalidade: Mapped[str] = mapped_column(VARCHAR(100), nullable=False, default='Brasil')
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
 

@@ -1,4 +1,4 @@
-from tb_pessoa import Pessoa 
+from tb_pessoa import Pessoa, pessoa
 from sqlalchemy import DECIMAL, ForeignKey, DATETIME, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.mysql import INTEGER
@@ -22,13 +22,39 @@ def adicionar_funcionario(session):
     nome = input("\nDigite o nome da pessoa: ")
     profissao = input("Digite a profissão do funcionário: ")
     salario = float(input("Digite o salário do funcionário: "))
-    data_criacao = datetime.now()
 
-    nova_pessoa = Pessoa(nome=nome, data_criacao=data_criacao)
-    session.add(nova_pessoa)
-    session.commit()
+    # Dados da pessoa
+    nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
+    cpf = input("Digite o CPF: ")
+    rg = input("Digite o RG: ")
+    sexo = input("Digite o sexo (M/F/NI): ")
+    email = input("Digite o email: ")
+    est_civil = input("Digite o estado civil: ")
 
-    novo_funcionario = Funcionario(id_funcionario=nova_pessoa.id_pessoa, data_criacao=data_criacao, profissao=profissao, salario=salario)
+    try:
+        nascimento = datetime.strptime(nascimento, '%Y-%m-%d').date()
+    except ValueError:
+        print("Data de nascimento no formato inválido. Use AAAA-MM-DD")
+        return
+
+    nova_pessoa = Pessoa(
+        nome=nome,
+        nascimento=nascimento,
+        cpf=cpf,
+        rg=rg,
+        sexo=sexo,
+        email=email,
+        est_civil=est_civil,
+        nacionalidade='Brasil'
+    )
+    novo_funcionario = Funcionario(
+        profissao=profissao,
+        salario=salario
+    )
+
+    # Relacione o novo funcionário com a nova pessoa
+    novo_funcionario.pessoa = nova_pessoa
+
     session.add(novo_funcionario)
     session.commit()
 

@@ -11,7 +11,7 @@ if not database_exists(db_url):
     create_database(db_url)
 
 # Crie uma instância do mecanismo e uma fábrica de sessões
-engine = create_engine(db_url, echo=True)
+engine = create_engine(db_url, echo=False)
 Session = sessionmaker(bind=engine)
 
 # Inicie a sessão
