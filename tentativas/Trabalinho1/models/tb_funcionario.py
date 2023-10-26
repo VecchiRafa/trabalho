@@ -21,12 +21,13 @@ class Funcionario(Base):
 # Adicionar Funcionario
 
 def adicionar_funcionario(session):
+    from tb_pessoa import adicionar_pessoa
     nova_pessoa = adicionar_pessoa(session)
     profissao = input("Digite a profissão do funcionário: ")
     salario = float(input("Digite o salário do funcionário: "))
 
     novo_funcionario = Funcionario(
-        id_funcionario = nova_pessoa.id_pessoa,
+        id_funcionario=nova_pessoa.id_pessoa,
         profissao=profissao,
         salario=salario
     )
@@ -36,27 +37,24 @@ def adicionar_funcionario(session):
 
     print("\nFuncionário adicionado com sucesso!")
 
-#=============================================================================================================================================================
-# Listar funcionarios
-
+# Função para listar todos os funcionários
 def listar_funcionario(session):
-    funcionarios = session.query(Funcionario).options(joinedload(Funcionario.pessoa)).all()
+    # Consultar funcionários e informações da tabela Pessoa combinadas
+    funcionarios_pessoas = session.query(Funcionario, Pessoa).filter(Funcionario.id_funcionario == Pessoa.id_pessoa).all()
     
-    if funcionarios:
+    if funcionarios_pessoas:
         print("\nLista de Funcionários:")
-        for funcionario in funcionarios:
-            print(f"ID: {funcionario.id_funcionario} | Nome: {funcionario.pessoa.nome} | Profissão: {funcionario.profissao} | Salário: {funcionario.salario}")
+        for funcionario, pessoa in funcionarios_pessoas:
+            print(f"ID Funcionário: {funcionario.id_funcionario} | Nome: {pessoa.nome} | Profissão: {funcionario.profissao} | Salário: {funcionario.salario}")
     else:
         print("Nenhum funcionário encontrado.")
 
-#=============================================================================================================================================================
-#Editar Funcionario
-
+# Função para editar informações de um funcionário
 def editar_funcionario(session):
     print()
     listar_funcionario(session)
     funcionario_id = int(input("\nDigite o ID do funcionário que deseja editar: "))
-    funcionario = session.get(Funcionario, funcionario_id)
+    funcionario = session.query(Funcionario).filter_by(id_funcionario=funcionario_id).first()
 
     if funcionario:
         nome = input("Digite o novo nome da pessoa: ")
@@ -72,15 +70,12 @@ def editar_funcionario(session):
     else:
         print("\nFuncionário não encontrado.")
 
-
-#=====================================================================================================================================
-# Excluir funcionario
-
+# Função para excluir um funcionário
 def excluir_funcionario(session):
     print()
     listar_funcionario(session)
     funcionario_id = int(input("\nDigite o ID do funcionário que deseja excluir: "))
-    funcionario = session.query(Funcionario).get(funcionario_id)
+    funcionario = session.query(Funcionario).filter_by(id_funcionario=funcionario_id).first()
 
     if funcionario:
         session.delete(funcionario)
@@ -89,7 +84,7 @@ def excluir_funcionario(session):
     else:
         print("Funcionário não encontrado.")
 
-#=====================================================================================================================================
+# Função principal para executar o programa
 def executar():
     # Iniciar uma sessão
     session = Session()
@@ -99,10 +94,10 @@ def executar():
         print(50 * "=")
         print()
         print("\nOpções:")
-        print("1. Listar funcionario")
-        print("2. Adicionar funcionario")
-        print("3. Editar funcionario")
-        print("4. Deletar funcionario")
+        print("1. Listar funcionário")
+        print("2. Adicionar funcionário")
+        print("3. Editar funcionário")
+        print("4. Deletar funcionário")
         print("5. Sair")
 
         escolha = input("Escolha uma opção: ")

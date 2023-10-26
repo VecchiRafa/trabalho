@@ -1,7 +1,7 @@
 # arrumar, não tem editar nem excluir
 
 from services.conect_bd import Base
-from tb_pessoa import Pessoa , listar_pessoa
+from tb_pessoa import Pessoa
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.mysql import INTEGER, TINYINT
 from sqlalchemy import ForeignKey
@@ -21,16 +21,13 @@ class Contato(Base):
 #=============================================================================================
 # Adicionar Contato
 
-def adicionar_contato(session):
+def adicionar_contato(session, id_pessoa):
+    print()
+    print("Adicione um contato:")
+    print("")
     codigo_pais = int(input("\nDigite o código do país: "))
     codigo_area = int(input("Digite o código da área: "))
     numero = int(input("Digite o número de contato: "))
-
-    # ID da pessoa associada ao contato
-    print()
-    listar_pessoa(session)
-    print()
-    id_pessoa = int(input("Digite o ID da pessoa associada a este contato: "))
 
     novo_contato = Contato(
         codigo_pais=codigo_pais,

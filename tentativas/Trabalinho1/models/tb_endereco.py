@@ -100,12 +100,12 @@ def editar_endereco(session):
 #=====================================================================================================================================
 # Adicionar endereço a uma pessoa.
 
-def adicionar_endereco(session):
-    print()
-    listar_pessoa(session)
-    print()
+def adicionar_endereco(session, id_pessoa):
+    
     # Solicita os dados do novo endereço
-    id_pessoa = int(input("Digite o ID da pessoa a qual deseja adicionar o endereço: "))
+    print()
+    print("Adicione um endereço:")
+    print("")
     cep = input("CEP: ")
     logradouro = input("Logradouro: ")
     numero = int(input("Número: "))

@@ -12,6 +12,16 @@ class Cliente(Base):
     id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER, ForeignKey(Pessoa.id_pessoa), nullable=False)
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
 
+def tempo_cliente(data_criacao):
+    data_atual = datetime.now()
+    periodo_cliente = data_atual - data_criacao
+
+    dias = periodo_cliente.days % 30
+    meses = (periodo_cliente.days % 365) // 30  # Calcula o número de meses como parte inteira dos dias restantes divididos por 30
+    anos = periodo_cliente.days // 365  # Calcula o número de anos como parte inteira dos dias divididos por 365
+
+    return dias, meses, anos
+
 
 def adicionar_cliente(session):
     nome = input("Nome: ")
@@ -38,7 +48,7 @@ def adicionar_cliente(session):
     session.commit()
 
     # Agora pegue o ID da pessoa recém-criada
-    id_pessoa = nova_pessoa.id_pessoa
+    id_pessoa = nova_pessoa.id_pessoa  # Obtém o ID da pessoa recém-criada
 
     novo_cliente = Cliente(id_pessoa=id_pessoa)
     session.add(novo_cliente)
@@ -47,13 +57,14 @@ def adicionar_cliente(session):
     print("Cliente adicionado com sucesso.")
 
 
+
 # Função para listar todos os clientes
 def listar_clientes(session):
     # Consultar clientes e informações da tabela Pessoa combinadas
     clientes_pessoas = session.query(Cliente, Pessoa).filter(Cliente.id_pessoa == Pessoa.id_pessoa).all()
     
     for cliente, pessoa in clientes_pessoas:
-        print(f"ID Cliente: {cliente.id_cliente} | ID Pessoa: {cliente.id_pessoa}"
+        print(f"ID Cliente: {cliente.id_cliente} | ID Pessoa: {cliente.id_pessoa} |"
               f"Nome: {pessoa.nome} | "
               f"Nascimento: {pessoa.nascimento} | "
               f"CPF: {pessoa.cpf} | "
@@ -68,15 +79,19 @@ def listar_clientes(session):
 
 
 # Função para atualizar informações de um cliente
-def atualizar_cliente(cliente_id, novo_id_pessoa, session):
+def atualizar_cliente(session):
+    listar_clientes(session)
+    cliente_id = int(input("Digite o ID do cliente que deseja editar: "))
+
     cliente = session.query(Cliente).filter_by(id_cliente=cliente_id).first()
     if cliente:
+        novo_id_pessoa = int(input("Digite o novo ID da pessoa associada a este cliente: "))
         cliente.id_pessoa = novo_id_pessoa
         session.commit()
         print("Informações do cliente atualizadas com sucesso.")
     else:
         print(f"Cliente com ID {cliente_id} não encontrado.")
-
+        
 # Função para excluir um cliente
 def excluir_cliente(session):
     listar_clientes(session)

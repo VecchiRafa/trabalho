@@ -10,6 +10,7 @@ from services.conect_bd import Session, Base
 
 class Pessoa(Base):
     __tablename__ = "pessoa"
+    __table_args__ = {'extend_existing': True}
     
     id_pessoa: Mapped[int] = mapped_column("id_pessoa", INTEGER,nullable=False, autoincrement=True, primary_key=True)
     nome: Mapped[str] =  mapped_column(VARCHAR(100), nullable=False)
@@ -20,7 +21,7 @@ class Pessoa(Base):
     email: Mapped[str] = mapped_column(VARCHAR(50), nullable=False, unique=True)
     est_civil: Mapped[str] =  mapped_column(VARCHAR(100), nullable=False)
     nacionalidade: Mapped[str] = mapped_column(VARCHAR(100), nullable=False, default='Brasil')
-    data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
+    data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now(), onupdate=datetime.now())
 
     
 
@@ -46,6 +47,12 @@ def adicionar_pessoa(session):
     nome = input("Nome: ")
     nascimento = input("Data de Nascimento (AAAA-MM-DD): ")
     cpf = input("CPF: ")
+    pessoa_existente = session.query(Pessoa).filter_by(cpf=cpf).first()
+
+    if pessoa_existente:
+        print("Um registro com este CPF já existe na tabela de pessoas.")
+        return pessoa_existente
+    
     rg = input("RG: ")
     sexo = input("Sexo (M/F/NI): ")
     email = input("Email: ")
@@ -75,8 +82,21 @@ def adicionar_pessoa(session):
     session.commit()
 
     print("Pessoa adicionada com sucesso.")
-    return nova_pessoa
 
+    # Agora, você pode chamar as funções de adicionar_contato e adicionar_endereco
+    id_pessoa = nova_pessoa.id_pessoa
+    from tb_cliente import Cliente
+    novo_cliente = Cliente(id_pessoa=id_pessoa)
+    session.add(novo_cliente)
+    session.commit()
+
+    from tb_contato import adicionar_contato
+    from tb_endereco import adicionar_endereco
+
+    adicionar_endereco(session, id_pessoa)
+    adicionar_contato(session, id_pessoa)
+
+    return nova_pessoa
 #==========================================================================================================================================================================
 # editar pessoa
 

@@ -74,6 +74,9 @@ def editar_pet(session):
     print()
     listar_pets(session)
     pet_id = int(input("\nDigite o ID do pet que deseja editar: "))
+
+    listar_especies(session)
+    print()
     especie_id = int(input("Digite o ID da espécie do pet: "))
 
     pet = session.query(Pet).filter_by(id_pet=pet_id, id_especie=especie_id).first()
