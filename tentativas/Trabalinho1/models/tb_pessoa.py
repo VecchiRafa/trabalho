@@ -49,6 +49,14 @@ def adicionar_pessoa(session):
     rg = input("RG: ")
     sexo = input("Sexo (M/F/NI): ")
     email = input("Email: ")
+
+    # Verifique se o email já existe na tabela de pessoas
+    pessoa_existente = session.query(Pessoa).filter_by(email=email).first()
+
+    if pessoa_existente:
+        print("Um registro com este email já existe na tabela de pessoas.")
+        return pessoa_existente  # Retornar a pessoa existente
+
     est_civil = input("Estado Civil (SOLTEIRO/CASADO/DIVORCIADO/SEPARADO/VIUVO): ")
     nacionalidade = input("Nacionalidade (Opcional, pressione Enter para usar 'Brasil'): ")
 
@@ -60,11 +68,14 @@ def adicionar_pessoa(session):
         sexo=sexo,
         email=email,
         est_civil=est_civil,
-        nacionalidade=nacionalidade
+        nacionalidade=nacionalidade if nacionalidade else 'Brasil'
     )
+
     session.add(nova_pessoa)
     session.commit()
+
     print("Pessoa adicionada com sucesso.")
+    return nova_pessoa
 
 #==========================================================================================================================================================================
 # editar pessoa

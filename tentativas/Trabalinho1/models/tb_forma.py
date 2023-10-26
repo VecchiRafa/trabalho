@@ -13,7 +13,7 @@ class Forma(Base):
 
 # Função para adicionar uma nova forma
 def adicionar_forma(session):
-    descricao = input("Digite a descrição da forma: ")
+    descricao = input("Digite a descrição da forma de pagamento: ")
     nova_forma = Forma(descricao=descricao)
     session.add(nova_forma)
     session.commit()
@@ -29,11 +29,11 @@ def listar_formas(session):
 def editar_forma(session):
     print()
     listar_formas(session)
-    forma_id = int(input("\nDigite o ID da forma que deseja editar: "))
-    forma = session.query(Forma).get(forma_id)
+    forma_id = int(input("\nDigite o ID da forma de pagamento que deseja editar: "))
+    forma = session.get(Forma, forma_id)
 
     if forma:
-        descricao = input("Digite a nova descrição da forma: ")
+        descricao = input("Digite a nova descrição da forma de pagamento: ")
         forma.descricao = descricao
         session.commit()
         print("\nForma atualizada com sucesso!")
@@ -44,8 +44,8 @@ def editar_forma(session):
 def excluir_forma(session):
     print()
     listar_formas(session)
-    forma_id = int(input("\nDigite o ID da forma que deseja excluir: "))
-    forma = session.query(Forma).get(forma_id)
+    forma_id = int(input("\nDigite o ID da forma de pagamento que deseja excluir: "))
+    forma = session.get(Forma, forma_id)
 
     if forma:
         session.delete(forma)

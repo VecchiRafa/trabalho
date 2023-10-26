@@ -1,3 +1,5 @@
+# 
+
 from tb_funcionario import Funcionario, listar_funcionario
 from sqlalchemy import DATETIME, ForeignKey, DECIMAL, DATE
 from sqlalchemy.orm import Mapped, mapped_column 
@@ -37,6 +39,9 @@ def listar_pagamentos(session):
 # Função para atualizar informações de um pagamento
 def atualizar_pagamento(session):
     mes_referencia = date.fromisoformat(input("Digite o mês de referência do pagamento que deseja atualizar (AAAA-MM-DD): "))
+
+    listar_funcionario(session)
+    print()
     id_funcionario = int(input("Digite o ID do funcionário associado ao pagamento: "))
     
     pagamento = session.query(Pagamento).filter_by(mes_referencia=mes_referencia, id_funcionario=id_funcionario).first()

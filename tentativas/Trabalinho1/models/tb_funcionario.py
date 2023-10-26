@@ -1,9 +1,9 @@
-from tb_pessoa import Pessoa, pessoa
+from tb_pessoa import Pessoa, adicionar_pessoa
 from sqlalchemy import DECIMAL, ForeignKey, DATETIME, VARCHAR
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, joinedload, relationship
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
-from services.conect_bd import Session, Base
+from services.conect_bd import Session, Base 
 
 #=============================================================================================================================================================
 # Tabela funcionario
@@ -14,46 +14,22 @@ class Funcionario(Base):
     data_criacao: Mapped[datetime] = mapped_column(DATETIME, nullable=False, default=datetime.now())
     profissao: Mapped[str] = mapped_column(VARCHAR(100), nullable=False)
     salario: Mapped[float] = mapped_column(DECIMAL(10,2), nullable=False)
+    
+    pessoa = relationship("Pessoa")
 
 #=============================================================================================================================================================
 # Adicionar Funcionario
 
 def adicionar_funcionario(session):
-    nome = input("\nDigite o nome da pessoa: ")
+    nova_pessoa = adicionar_pessoa(session)
     profissao = input("Digite a profissão do funcionário: ")
     salario = float(input("Digite o salário do funcionário: "))
 
-    # Dados da pessoa
-    nascimento = input("Digite a data de nascimento (AAAA-MM-DD): ")
-    cpf = input("Digite o CPF: ")
-    rg = input("Digite o RG: ")
-    sexo = input("Digite o sexo (M/F/NI): ")
-    email = input("Digite o email: ")
-    est_civil = input("Digite o estado civil: ")
-
-    try:
-        nascimento = datetime.strptime(nascimento, '%Y-%m-%d').date()
-    except ValueError:
-        print("Data de nascimento no formato inválido. Use AAAA-MM-DD")
-        return
-
-    nova_pessoa = Pessoa(
-        nome=nome,
-        nascimento=nascimento,
-        cpf=cpf,
-        rg=rg,
-        sexo=sexo,
-        email=email,
-        est_civil=est_civil,
-        nacionalidade='Brasil'
-    )
     novo_funcionario = Funcionario(
+        id_funcionario = nova_pessoa.id_pessoa,
         profissao=profissao,
         salario=salario
     )
-
-    # Relacione o novo funcionário com a nova pessoa
-    novo_funcionario.pessoa = nova_pessoa
 
     session.add(novo_funcionario)
     session.commit()
@@ -64,10 +40,14 @@ def adicionar_funcionario(session):
 # Listar funcionarios
 
 def listar_funcionario(session):
-    funcionarios = session.query(Funcionario).all()
-    for funcionario in funcionarios:
-        print(f"\nID: {funcionario.id_funcionario} | Nome: {funcionario.pessoa.nome} | Profissão: {funcionario.profissao} | Salário: {funcionario.salario}")
-
+    funcionarios = session.query(Funcionario).options(joinedload(Funcionario.pessoa)).all()
+    
+    if funcionarios:
+        print("\nLista de Funcionários:")
+        for funcionario in funcionarios:
+            print(f"ID: {funcionario.id_funcionario} | Nome: {funcionario.pessoa.nome} | Profissão: {funcionario.profissao} | Salário: {funcionario.salario}")
+    else:
+        print("Nenhum funcionário encontrado.")
 
 #=============================================================================================================================================================
 #Editar Funcionario
@@ -76,7 +56,7 @@ def editar_funcionario(session):
     print()
     listar_funcionario(session)
     funcionario_id = int(input("\nDigite o ID do funcionário que deseja editar: "))
-    funcionario = session.query(Funcionario).get(funcionario_id)
+    funcionario = session.get(Funcionario, funcionario_id)
 
     if funcionario:
         nome = input("Digite o novo nome da pessoa: ")

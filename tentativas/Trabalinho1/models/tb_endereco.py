@@ -26,17 +26,13 @@ class Endereco(Base):
 
 def listar_endereco(session):
     # Consultar endereços e pessoas com informações combinadas
-    enderecos_pessoas = (
-        session.query(Endereco, Pessoa)
-        .join(Pessoa, Endereco.id_pessoa == Pessoa.id_pessoa)
-        .all()
-    )
+    enderecos_pessoas = (session.query(Endereco, Pessoa).join(Pessoa, Endereco.id_pessoa == Pessoa.id_pessoa).all())
 
     for endereco, pessoa in enderecos_pessoas:
         print(
             f"\nID Endereço: {endereco.id_endereco} | Data de Registro: {endereco.data_criacao} | CEP: {endereco.cep} | "
             f"Logradouro: {endereco.logradouro} | Numero: {endereco.numero} | Bairro: {endereco.bairro} | "
-            f"Cidade: {endereco.cidade} | Estado: {endereco.estado} | Nome: {pessoa.nome}"
+            f"Cidade: {endereco.cidade} | Estado: {endereco.estado} | ID Pessoa: {endereco.id_pessoa}"
         )
 #=====================================================================================================================================
 # listar endereções de uma pessoa.
@@ -56,40 +52,50 @@ def listar_endereco_pessoa(session, pessoa_id):
 
 def editar_endereco(session):
     print()
-    listar_pessoa(session)
-    print()
-    pessoa_id = int(input("Digite o ID da pessoa cujo endereço deseja editar: "))
+    
+    # Consulta que lista apenas pessoas que têm endereço associado
+    pessoas_com_endereco = session.query(Pessoa).join(Endereco).all()
 
-    pessoa = session.query(Pessoa).filter_by(id_pessoa=pessoa_id).first()
-    if pessoa:
-        listar_endereco_pessoa(session, pessoa_id)
-        endereco_id = int(input("Digite o ID do endereço que deseja editar: "))
+    if pessoas_com_endereco:
+        print("Pessoas com endereço disponível para edição:")
+        for pessoa in pessoas_com_endereco:
+            print(f"ID Pessoa: {pessoa.id_pessoa} | Nome: {pessoa.nome}")
 
-        endereco = session.query(Endereco).filter_by(id_endereco=endereco_id, id_pessoa=pessoa_id).first()
-        if endereco:
-            # Solicita as novas informações do endereço
-            cep = input("Novo CEP: ")
-            logradouro = input("Novo Logradouro: ")
-            numero = int(input("Novo Número: "))
-            bairro = input("Novo Bairro: ")
-            cidade = input("Nova Cidade: ")
-            estado = input("Novo Estado: ")
+        print()
+        pessoa_id = int(input("Digite o ID da pessoa cujo endereço deseja editar: "))
 
-            # Atualiza as informações do endereço
-            endereco.cep = cep
-            endereco.logradouro = logradouro
-            endereco.numero = numero
-            endereco.bairro = bairro
-            endereco.cidade = cidade
-            endereco.estado = estado
-            session.commit()
-            print("Informações do endereço atualizadas com sucesso.")
+        pessoa = session.query(Pessoa).filter_by(id_pessoa=pessoa_id).first()
+        if pessoa:
+            listar_endereco_pessoa(session, pessoa_id)
+            endereco_id = int(input("Digite o ID do endereço que deseja editar: "))
+
+            listar_endereco(session)
+
+            endereco = session.query(Endereco).filter_by(id_endereco=endereco_id, id_pessoa=pessoa_id).first()
+            if endereco:
+                # Solicita as novas informações do endereço
+                cep = input("Novo CEP: ")
+                logradouro = input("Novo Logradouro: ")
+                numero = int(input("Novo Número: "))
+                bairro = input("Novo Bairro: ")
+                cidade = input("Nova Cidade: ")
+                estado = input("Novo Estado: ")
+
+                # Atualiza as informações do endereço
+                endereco.cep = cep
+                endereco.logradouro = logradouro
+                endereco.numero = numero
+                endereco.bairro = bairro
+                endereco.cidade = cidade
+                endereco.estado = estado
+                session.commit()
+                print("Informações do endereço atualizadas com sucesso.")
+            else:
+                print(f"Endereço com ID {endereco_id} não encontrado para a pessoa com ID {pessoa_id}.")
         else:
-            print(f"Endereço com ID {endereco_id} não encontrado para a pessoa com ID {pessoa_id}.")
+            print(f"Pessoa com ID {pessoa_id} não encontrada.")
     else:
-        print(f"Pessoa com ID {pessoa_id} não encontrada.")
-
-
+        print("Nenhuma pessoa com endereço disponível para edição.")
 
 #=====================================================================================================================================
 # Adicionar endereço a uma pessoa.
@@ -129,27 +135,36 @@ def adicionar_endereco(session):
 #=====================================================================================================================================
 # exluir endereço
 
-
 def excluir_endereco(session):
     print()
-    listar_pessoa(session)
-    print()
-    pessoa_id = int(input("\nDigite o ID da pessoa cujo endereço deseja excluir: "))
+    
+    # Consulta que lista apenas pessoas que têm endereço associado
+    pessoas_com_endereco = session.query(Pessoa).join(Endereco).all()
 
-    pessoa = session.query(Pessoa).filter_by(id_pessoa=pessoa_id).first()
-    if pessoa:
-        listar_endereco_pessoa(session, pessoa_id)
-        endereco_id = int(input("\nDigite o ID do endereço que deseja excluir: "))
+    if pessoas_com_endereco:
+        print("Pessoas com endereço disponível para exclusão:")
+        for pessoa in pessoas_com_endereco:
+            print(f"ID Pessoa: {pessoa.id_pessoa} | Nome: {pessoa.nome}")
 
-        endereco = session.query(Endereco).filter_by(id_endereco=endereco_id, id_pessoa=pessoa_id).first()
-        if endereco:
-            session.delete(endereco)
-            session.commit()
-            print("Endereço excluído com sucesso.")
+        print()
+        pessoa_id = int(input("Digite o ID da pessoa cujo endereço deseja excluir: "))
+
+        pessoa = session.query(Pessoa).filter_by(id_pessoa=pessoa_id).first()
+        if pessoa:
+            listar_endereco_pessoa(session, pessoa_id)
+            endereco_id = int(input("Digite o ID do endereço que deseja excluir: "))
+
+            endereco = session.query(Endereco).filter_by(id_endereco=endereco_id, id_pessoa=pessoa_id).first()
+            if endereco:
+                session.delete(endereco)
+                session.commit()
+                print("Endereço excluído com sucesso.")
+            else:
+                print(f"Endereço com ID {endereco_id} não encontrado para a pessoa com ID {pessoa_id}.")
         else:
-            print(f"Endereço com ID {endereco_id} não encontrado para a pessoa com ID {pessoa_id}.")
+            print(f"Pessoa com ID {pessoa_id} não encontrada.")
     else:
-        print(f"Pessoa com ID {pessoa_id} não encontrada.")
+        print("Nenhuma pessoa com endereço disponível para exclusão.")
 
 #=====================================================================================================================================
 def executar():
