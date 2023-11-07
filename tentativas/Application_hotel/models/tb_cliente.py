@@ -3,7 +3,7 @@ from sqlalchemy.dialects.mysql import INTEGER, SMALLINT
 from sqlalchemy.orm import Mapped, mapped_column
 from services.conect_bd import Session, Base
 from datetime import datetime
-from tb_pessoa import Pessoa, listar_pessoa
+from tb_pessoa import Pessoa
 
 class Cliente(Base):
     __tablename__ = "cliente"

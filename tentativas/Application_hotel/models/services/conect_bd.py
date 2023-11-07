@@ -26,3 +26,4 @@ Session = sessionmaker(bind=engine)
 
 # Crie uma instância da classe Base
 Base = declarative_base()
+Base.metadata.create_all(engine)
